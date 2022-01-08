@@ -2,6 +2,4 @@
 
 Hello World!
 
-This is a journal to record what I learn, and what I try out, and what works and what doesn't. This blog also helps me to crystalize my thought process. 
-
-
+This is a journal to record what I learnt, and what I tried out, and what works and what doesn't. This blog also helps me to crystalize my thought process. 
