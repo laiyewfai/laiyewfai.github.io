@@ -1,37 +1,26 @@
-## Welcome to GitHub Pages
+## 8 Jan 2021
 
-You can use the [editor on GitHub](https://github.com/laiyewfai/laiyewfai.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
+Hello World!
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+If you are a programmer, you are probaly familiar with the first program written in a new language. This signifies two things: 
 
-### Markdown
+a. a program which runs a line of code, successfully.
+b. a program which gives a simple output to the interface.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+This also correspond to what I want to achieve with this blog, which are
 
-```markdown
-Syntax highlighted code block
+a. to execute my daily routines successfully.
+b. to generate output(hopefully contributions) to the readers of the blog.
 
-# Header 1
-## Header 2
-### Header 3
+As a person who has worked in the IT line for many years, I find there are many similaries between Programming Codes and Living a life. They are
 
-- Bulleted
-- List
+a. Habits - automated batch jobs which get triggered
+b. Decision-making - If/Then/Else Conditional
+c. Continuous Improvement/Kaizen(改善） - Debugging to fix the issues 
+ 
+As I discovered, there are many concepts which can be cross-pollinated from one field to another. This is just one of the many examples.
 
-1. Numbered
-2. List
+This is also a journal for my journey, when I will record down what I learn, and what I try out, and what works and what doesn't. This blog also helps me to crystalize my thought process, and hopefully, help you (as a reader) to see things a little better. 
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/laiyewfai/laiyewfai.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
