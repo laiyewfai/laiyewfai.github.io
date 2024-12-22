@@ -8,4 +8,4 @@ In reality, we possess nothing; we are given only the temporary right to use eve
 
 Do not dwell in sorrow over loss, for impermanence is life’s natural order. Clinging to people or possessions breeds stress and, in time, makes it feel as though they own us. Remember: ownership is temporary, and loss is inevitable.
 
-Once you embrace this truth, you’ll realize there is no need for sadness in losing someone or something. You’ll approach life’s challenges with resilience, cherishing the right to use what you have while releasing the illusion of ownership. Acquiring may be accidental, but losing is inevitable—and accepting this reality is the path to freedom.
+Once you embrace this truth, you’ll realize there is no need for sadness in losing someone or something. You’ll approach life’s challenges with resilience, cherishing the right to use what you have while letting go of the notion of ownership. Acquiring things may be accidental, but losing is inevitable—and accepting this reality can set you free.
