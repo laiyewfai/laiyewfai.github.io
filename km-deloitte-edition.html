@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Knowledge Management | Deloitte</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&family=STIX+Two+Text:ital,wght@1,600&display=swap');
+
+  /* ═══════════ DELOITTE DESIGN TOKENS ═══════════ */
+  :root {
+    --green:        #86BC25;
+    --green-light:  #A0D93B;
+    --green-dark:   #6B961E;
+    --green-tint:   #E7F2D3;
+    --blue:         #0076A8;
+    --blue-light:   #00A3E0;
+    --blue-tint:    #E7F6FF;
+    --teal:         #0D8390;
+    --red:          #DA291C;
+    --black:        #000000;
+    --near-black:   #121212;
+    --dk-gray:      #53565A;
+    --md-gray:      #75787B;
+    --lt-gray:      #D0D0CE;
+    --off-white:    #F5F6F6;
+    --white:        #FFFFFF;
+    --font-sans:    'Open Sans', Aptos, Helvetica, sans-serif;
+    --font-serif:   'STIX Two Text', 'Noto Serif', Georgia, serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Slide ── */
+  .slide {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 5vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Navigation Dots ── */
+  .nav-dots {
+    position: fixed; right: 30px; top: 50%;
+    transform: translateY(-50%); z-index: 100;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .nav-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--lt-gray);
+    cursor: pointer; transition: all 0.3s;
+  }
+  .nav-dot:hover, .nav-dot.active {
+    background: var(--green);
+    transform: scale(1.4);
+  }
+
+  /* ── Shared ── */
+  .section-label {
+    display: inline-block;
+    padding: 6px 16px; border-radius: 4px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 800; letter-spacing: -1px;
+    margin-bottom: 16px; line-height: 1.15;
+  }
+  .section-subtitle {
+    font-size: 18px; color: var(--dk-gray);
+    max-width: 600px; margin: 0 auto 40px;
+    line-height: 1.6; font-weight: 400;
+  }
+
+  /* ═══════════ SLIDE 1 — HERO ═══════════ */
+  .slide-hero {
+    background: var(--near-black);
+    flex-direction: column; text-align: center; gap: 24px;
+    padding-top: 60px;
+  }
+  .hero-green-dot {
+    width: 12px; height: 12px;
+    background: var(--green);
+    border-radius: 50%; margin-bottom: 8px;
+    display: inline-block;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 8px 20px; border-radius: 50px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 13px; font-weight: 600; color: var(--lt-gray);
+    letter-spacing: 1px;
+  }
+  .hero-badge .dot {
+    width: 8px; height: 8px; background: var(--green); border-radius: 50%;
+  }
+  .hero-title {
+    font-size: clamp(40px, 7vw, 80px);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -1.5px; color: var(--white);
+    max-width: 900px;
+  }
+  .hero-title em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--green);
+  }
+  .hero-subtitle {
+    font-size: clamp(15px, 1.8vw, 20px);
+    color: var(--md-gray); max-width: 580px;
+    font-weight: 300; line-height: 1.7;
+  }
+
+  /* ── Floating Shapes ── */
+  .shapes {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+  }
+  .shape {
+    position: absolute; border-radius: 50%; opacity: 0.06;
+  }
+  .shape:nth-child(1) {
+    width: 400px; height: 400px; background: var(--green);
+    top: -100px; right: -100px;
+  }
+  .shape:nth-child(2) {
+    width: 250px; height: 250px; background: var(--blue);
+    bottom: 10%; left: 5%;
+  }
+  .shape:nth-child(3) {
+    width: 180px; height: 180px; background: var(--teal);
+    top: 50%; left: 15%;
+  }
+
+  /* ═══════════ SLIDE 2 — PROBLEM ═══════════ */
+  .slide-problem {
+    background: var(--off-white);
+  }
+  .slide-problem .section-label {
+    background: rgba(218,41,28,0.08); color: var(--red);
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px; width: 100%; max-width: 920px;
+  }
+  .stat-card {
+    background: var(--white);
+    padding: 36px 24px; text-align: center;
+    border-radius: 8px;
+    border: 1px solid var(--lt-gray);
+    transition: box-shadow 0.3s;
+  }
+  .stat-card:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+  }
+  .stat-number {
+    font-size: 44px; font-weight: 800;
+    color: var(--blue); line-height: 1.1;
+  }
+  .stat-label {
+    font-size: 14px; color: var(--dk-gray);
+    margin-top: 8px; line-height: 1.5;
+  }
+
+  /* ═══════════ SLIDE 3 — PILLARS ═══════════ */
+  .slide-pillars {
+    background: var(--white);
+  }
+  .slide-pillars .section-label {
+    background: var(--green-tint); color: var(--green-dark);
+  }
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 28px; max-width: 1000px; width: 100%;
+  }
+  .pillar-card {
+    background: var(--off-white);
+    padding: 36px 28px;
+    border-radius: 8px;
+    border-top: 3px solid var(--blue);
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  .pillar-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  .pillar-icon {
+    font-size: 36px; margin-bottom: 16px; display: block;
+  }
+  .pillar-title {
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 8px; color: var(--black);
+  }
+  .pillar-desc {
+    font-size: 14px; color: var(--dk-gray);
+    line-height: 1.7;
+  }
+
+  /* ═══════════ SLIDE 4 — FLOW ═══════════ */
+  .slide-flow {
+    background: var(--off-white);
+  }
+  .slide-flow .section-label {
+    background: var(--blue-tint); color: var(--blue);
+  }
+  .flow-container {
+    display: flex; align-items: center; gap: 12px;
+    flex-wrap: wrap; justify-content: center;
+    max-width: 1000px;
+  }
+  .flow-step {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; padding: 24px 20px;
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--lt-gray);
+    min-width: 140px;
+  }
+  .flow-number {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 700;
+    background: var(--blue-tint); color: var(--blue);
+    margin-bottom: 10px;
+  }
+  .flow-arrow {
+    font-size: 24px; color: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* ═══════════ SLIDE 5 — AI ═══════════ */
+  .slide-ai {
+    background: var(--white);
+  }
+  .slide-ai .section-label {
+    background: var(--green-tint); color: var(--green-dark);
+  }
+  .ai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 28px; max-width: 920px; width: 100%;
+  }
+  .ai-card {
+    background: var(--off-white);
+    padding: 36px 28px;
+    border-radius: 8px;
+    position: relative; overflow: hidden;
+  }
+  .ai-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: var(--green);
+  }
+  .ai-card .icon {
+    font-size: 32px; margin-bottom: 14px; display: block;
+  }
+  .ai-card h4 {
+    font-size: 18px; font-weight: 700; margin-bottom: 8px;
+  }
+  .ai-card p {
+    font-size: 14px; color: var(--dk-gray); line-height: 1.7;
+  }
+
+  /* ═══════════ SLIDE 6 — ROI ═══════════ */
+  .slide-roi {
+    background: var(--off-white);
+  }
+  .slide-roi .section-label {
+    background: var(--blue-tint); color: var(--blue);
+  }
+  .roi-container { max-width: 600px; width: 100%; }
+  .roi-bar { margin-bottom: 24px; }
+  .roi-label {
+    display: flex; justify-content: space-between;
+    font-size: 15px; font-weight: 600; margin-bottom: 8px;
+    color: var(--black);
+  }
+  .roi-label .val { color: var(--blue); }
+  .roi-track {
+    height: 10px; border-radius: 5px;
+    background: var(--lt-gray); overflow: hidden;
+  }
+  .roi-fill {
+    height: 100%; border-radius: 5px;
+    transition: width 1.2s ease;
+  }
+
+  /* ═══════════ SLIDE 7 — CTA ═══════════ */
+  .slide-cta {
+    background: var(--near-black);
+    flex-direction: column; text-align: center; gap: 28px;
+  }
+  .cta-title {
+    font-size: clamp(30px, 5vw, 56px);
+    font-weight: 800; letter-spacing: -1px;
+    color: var(--white); max-width: 700px; line-height: 1.2;
+  }
+  .cta-title .green { color: var(--green); }
+  .cta-subtitle {
+    font-size: 18px; color: var(--md-gray);
+    max-width: 480px; line-height: 1.7; font-weight: 300;
+  }
+  .cta-button {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 16px 40px; border-radius: 4px;
+    background: var(--blue); color: var(--white);
+    font-size: 16px; font-weight: 700; text-decoration: none;
+    cursor: pointer; border: none;
+    transition: background 0.3s, transform 0.2s;
+  }
+  .cta-button:hover {
+    background: var(--blue-light);
+    transform: translateY(-2px);
+  }
+  .cta-footer {
+    font-size: 12px; color: var(--md-gray);
+    margin-top: 16px;
+  }
+  .cta-footer .dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--green); border-radius: 50%;
+    margin: 0 6px; vertical-align: middle;
+  }
+
+  /* ── Particle Canvas ── */
+  #particles {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; opacity: 0.3;
+  }
+
+  @media (max-width: 768px) {
+    .nav-dots { display: none; }
+    .slide { padding: 60px 24px; }
+    .flow-arrow { transform: rotate(90deg); }
+    .flow-container { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="particles"></canvas>
+
+<nav class="nav-dots" id="navDots"></nav>
+
+<!-- ═══════════ SLIDE 1: HERO ═══════════ -->
+<section class="slide slide-hero" id="s1">
+  <div class="shapes">
+    <div class="shape"></div><div class="shape"></div><div class="shape"></div>
+  </div>
+  <div class="hero-badge"><span class="dot"></span>Enterprise Intelligence</div>
+  <h1 class="hero-title">
+    From Tribal Knowledge<br>
+    to <em>Collective Genius</em>
+  </h1>
+  <p class="hero-subtitle">
+    When your best answers live in someone's head — and they're on leave —
+    you don't have a knowledge gap. You have a knowledge management problem.
+  </p>
+  <div class="hero-green-dot"></div>
+</section>
+
+<!-- ═══════════ SLIDE 2: THE PROBLEM ═══════════ -->
+<section class="slide slide-problem" id="s2">
+  <div style="max-width:920px; text-align:center;">
+    <div class="section-label">The Reality</div>
+    <h2 class="section-title">Knowledge isn't shared.<br>It's <span style="color:var(--red);">lost.</span></h2>
+    <p class="section-subtitle">
+      Every day, enterprises bleed time and money searching for information that already exists — somewhere.
+    </p>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">5.3h</div>
+        <div class="stat-label">per week spent searching for internal information</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">$47M</div>
+        <div class="stat-label">annual productivity loss (Fortune 500 average)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">42%</div>
+        <div class="stat-label">of institutional knowledge walks out the door</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">3×</div>
+        <div class="stat-label">faster onboarding with structured KM</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SLIDE 3: FOUR PILLARS ═══════════ -->
+<section class="slide slide-pillars" id="s3">
+  <div style="max-width:1000px; text-align:center;">
+    <div class="section-label">Framework</div>
+    <h2 class="section-title">The Four Pillars of Enterprise KM</h2>
+    <p class="section-subtitle">A systematic approach to turning scattered information into organizational intelligence.</p>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <span class="pillar-icon">🔍</span>
+        <div class="pillar-title">Capture</div>
+        <div class="pillar-desc">
+          Surface tacit knowledge before it evaporates. Meeting notes, decisions,
+          post-mortems — auto-ingested, never manually filed.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <span class="pillar-icon">🗂️</span>
+        <div class="pillar-title">Organize</div>
+        <div class="pillar-desc">
+          Semantic indexing, not folder hierarchies. AI tags, links, and surfaces
+          relationships no human would manually maintain.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <span class="pillar-icon">⚡</span>
+        <div class="pillar-title">Retrieve</div>
+        <div class="pillar-desc">
+          Natural language search that actually works. Ask a question, get the
+          answer — not a link to a 60-page PDF from 2019.
+        </div>
+      </div>
+      <div class="pillar-card">
+        <span class="pillar-icon">🔄</span>
+        <div class="pillar-title">Evolve</div>
+        <div class="pillar-desc">
+          Knowledge that improves with use. Feedback loops, versioning, and
+          deprecation keep the corpus alive — not a graveyard.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SLIDE 4: THE FLOW ═══════════ -->
+<section class="slide slide-flow" id="s4">
+  <div style="max-width:1000px; text-align:center;">
+    <div class="section-label">Pipeline</div>
+    <h2 class="section-title">From Signal to Searchable</h2>
+    <p class="section-subtitle">Knowledge flows through five stages — from raw input to actionable insight.</p>
+    <div class="flow-container">
+      <div class="flow-step">
+        <div class="flow-number">1</div>
+        <strong style="font-size:15px;">Ingest</strong>
+        <span style="font-size:13px; color:var(--dk-gray); margin-top:4px;">Slack · Teams · Email · Docs</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-number">2</div>
+        <strong style="font-size:15px;">Process</strong>
+        <span style="font-size:13px; color:var(--dk-gray); margin-top:4px;">Transcribe · Chunk · Embed</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-number">3</div>
+        <strong style="font-size:15px;">Index</strong>
+        <span style="font-size:13px; color:var(--dk-gray); margin-top:4px;">Vector DB · Graph · FTS</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-number">4</div>
+        <strong style="font-size:15px;">Retrieve</strong>
+        <span style="font-size:13px; color:var(--dk-gray); margin-top:4px;">Hybrid Search · RAG</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-number">5</div>
+        <strong style="font-size:15px;">Act</strong>
+        <span style="font-size:13px; color:var(--dk-gray); margin-top:4px;">Answers · Drafts · Decisions</span>
+      </div>
+    </div>
+    <p style="color:var(--md-gray); font-size:13px; margin-top:36px; font-style:italic;">
+      "The best knowledge base is the one nobody has to open."
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════ SLIDE 5: AI LAYER ═══════════ -->
+<section class="slide slide-ai" id="s5">
+  <div style="max-width:940px; text-align:center;">
+    <div class="section-label">Intelligence Layer</div>
+    <h2 class="section-title">AI Is the Operating System</h2>
+    <p class="section-subtitle">Three capabilities that transform a document repository into a thinking partner.</p>
+    <div class="ai-grid">
+      <div class="ai-card">
+        <span class="icon">🔮</span>
+        <h4>Semantic Discovery</h4>
+        <p>
+          Not keyword matching. The system understands what you <em>mean</em> — not just what you
+          type — and surfaces documents you didn't know existed.
+        </p>
+      </div>
+      <div class="ai-card">
+        <span class="icon">🧠</span>
+        <h4>Synthesis, Not Search</h4>
+        <p>
+          Ten documents? One answer. The AI reads everything so you don't have to —
+          cross-referencing, reconciling contradictions, citing sources.
+        </p>
+      </div>
+      <div class="ai-card">
+        <span class="icon">🌱</span>
+        <h4>Self-Healing Corpus</h4>
+        <p>
+          Detects stale content, flags contradictions, suggests updates.
+          Your knowledge base gets smarter — not more cluttered.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SLIDE 6: ROI ═══════════ -->
+<section class="slide slide-roi" id="s6">
+  <div style="max-width:640px; text-align:center;">
+    <div class="section-label">The Return</div>
+    <h2 class="section-title">What You Get Back</h2>
+    <p class="section-subtitle">Measurable outcomes from organizations that invested in structured KM.</p>
+    <div class="roi-container">
+      <div class="roi-bar">
+        <div class="roi-label"><span>⏱️ Time-to-answer reduction</span><span class="val">−60%</span></div>
+        <div class="roi-track"><div class="roi-fill" style="width:60%; background:var(--blue);"></div></div>
+      </div>
+      <div class="roi-bar">
+        <div class="roi-label"><span>🆕 New hire ramp time</span><span class="val">−45%</span></div>
+        <div class="roi-track"><div class="roi-fill" style="width:45%; background:var(--teal);"></div></div>
+      </div>
+      <div class="roi-bar">
+        <div class="roi-label"><span>🔁 Duplicate work eliminated</span><span class="val">−35%</span></div>
+        <div class="roi-track"><div class="roi-fill" style="width:35%; background:var(--green);"></div></div>
+      </div>
+      <div class="roi-bar">
+        <div class="roi-label"><span>📈 Employee satisfaction</span><span class="val">+28%</span></div>
+        <div class="roi-track"><div class="roi-fill" style="width:28%; background:var(--green-light);"></div></div>
+      </div>
+      <div class="roi-bar">
+        <div class="roi-label"><span>💡 Innovation velocity</span><span class="val">+50%</span></div>
+        <div class="roi-track"><div class="roi-fill" style="width:50%; background:var(--blue-light);"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ SLIDE 7: CTA ═══════════ -->
+<section class="slide slide-cta" id="s7">
+  <div class="shapes">
+    <div class="shape"></div><div class="shape"></div><div class="shape"></div>
+  </div>
+  <h2 class="cta-title">
+    Your Organization<br>
+    <span class="green">Already Knows Everything.</span>
+  </h2>
+  <p class="cta-subtitle">
+    It just doesn't know it knows. Let's fix that.
+  </p>
+  <a class="cta-button" href="#">Start Building →</a>
+  <p class="cta-footer">
+    Crafted with <span class="dot"></span> by JΞNSΞN &amp; Hermes · 2026
+  </p>
+</section>
+
+<script>
+// ── Particle system ──
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.speedX = (Math.random() - 0.5) * 0.3; this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.3 + 0.05;
+  }
+  update() {
+    this.x += this.speedX; this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw() {
+    ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(134, 188, 37, ${this.opacity})`; ctx.fill();
+  }
+}
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i+1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x, dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(134, 188, 37, ${0.06 * (1-dist/100)})`;
+        ctx.lineWidth = 0.5; ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ── Navigation Dots ──
+const slides = document.querySelectorAll('.slide');
+const navDots = document.getElementById('navDots');
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'nav-dot'; dot.title = `Slide ${i+1}`;
+  dot.onclick = () => slides[i].scrollIntoView({ behavior: 'smooth' });
+  navDots.appendChild(dot);
+});
+const dots = navDots.querySelectorAll('.nav-dot');
+new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      dots.forEach(d => d.classList.remove('active'));
+      dots[Array.from(slides).indexOf(e.target)]?.classList.add('active');
+    }
+  });
+}, { threshold: 0.6 }).observe;
+slides.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
