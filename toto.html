@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Singapore Toto Generator</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            padding: 1rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 2rem;
+            padding: 3rem 2.5rem;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+        }
+        h1 { color: #fff; font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.25rem; }
+        .subtitle { color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-bottom: 2rem; }
+        .subtitle em { font-style: normal; color: rgba(255,255,255,0.7); }
+        .ball-grid { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 2.5rem; }
+        .ball {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; font-weight: 800; color: #fff;
+            box-shadow: 0 6px 20px rgba(247,151,30,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            animation: pop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        .ball:nth-child(1) { animation-delay:0.00s; background:linear-gradient(145deg,#f7971e,#ffd200); }
+        .ball:nth-child(2) { animation-delay:0.06s; background:linear-gradient(145deg,#e74c3c,#f39c12); box-shadow:0 6px 20px rgba(231,76,60,0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
+        .ball:nth-child(3) { animation-delay:0.12s; background:linear-gradient(145deg,#2ecc71,#27ae60); box-shadow:0 6px 20px rgba(46,204,113,0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
+        .ball:nth-child(4) { animation-delay:0.18s; background:linear-gradient(145deg,#3498db,#2980b9); box-shadow:0 6px 20px rgba(52,152,219,0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
+        .ball:nth-child(5) { animation-delay:0.24s; background:linear-gradient(145deg,#9b59b6,#8e44ad); box-shadow:0 6px 20px rgba(155,89,182,0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
+        .ball:nth-child(6) { animation-delay:0.30s; background:linear-gradient(145deg,#e84393,#fd79a8); box-shadow:0 6px 20px rgba(232,67,147,0.4), inset 0 2px 4px rgba(255,255,255,0.3); }
+        @keyframes pop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .ball.empty { background:rgba(255,255,255,0.06); box-shadow:inset 0 2px 4px rgba(0,0,0,0.2); color:rgba(255,255,255,0.15); font-size:1.8rem; text-shadow:none; }
+        .btn {
+            display: inline-block; padding: 0.9rem 3rem; border: none;
+            border-radius: 60px; font-size: 1rem; font-weight: 700; cursor: pointer;
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e; box-shadow: 0 4px 20px rgba(247,151,30,0.4);
+            transition: all 0.2s ease; letter-spacing: 0.01em;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(247,151,30,0.5); }
+        .btn:active { transform: translateY(0); }
+        .footer { margin-top: 1.5rem; color: rgba(255,255,255,0.25); font-size: 0.75rem; }
+        .result-line {
+            margin-top: 1.25rem; padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.04); border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.06); min-height: 3.2rem;
+            display: flex; align-items: center; justify-content: center; gap: 1rem;
+            font-size: 1.1rem;
+        }
+        .result-label { color: rgba(255,255,255,0.3); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; }
+        .result-numbers { color: rgba(255,255,255,0.8); font-weight: 600; font-variant-numeric: tabular-nums; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🀄 Singapore Toto</h1>
+        <p class="subtitle">6 numbers · 1–49 · no repeats &nbsp; <em>— your lucky draw</em></p>
+        <div class="ball-grid" id="ballGrid">
+            <div class="ball empty">?</div>
+            <div class="ball empty">?</div>
+            <div class="ball empty">?</div>
+            <div class="ball empty">?</div>
+            <div class="ball empty">?</div>
+            <div class="ball empty">?</div>
+        </div>
+        <button class="btn" id="generateBtn">🎰 Generate Numbers</button>
+        <div class="result-line">
+            <span class="result-label">Sorted</span>
+            <span class="result-numbers" id="sortedDisplay">—</span>
+        </div>
+        <p class="footer">This page runs entirely in your browser &mdash; no server, no tracking.</p>
+    </div>
+    <script>
+        (function(){
+            const balls = document.querySelectorAll('.ball');
+            const sortedDisplay = document.getElementById('sortedDisplay');
+
+            function generate() {
+                const s = new Set();
+                while(s.size<6) s.add(Math.floor(Math.random()*49)+1);
+                const raw = [...s];
+                const sorted = [...raw].sort((a,b)=>a-b);
+                balls.forEach((b,i)=>{
+                    b.textContent = raw[i];
+                    b.classList.remove('empty');
+                    b.style.animation = 'none';
+                    b.offsetHeight;
+                    b.style.animation = `pop 0.35s cubic-bezier(0.34,1.56,0.64,1) ${i*0.07}s both`;
+                });
+                sortedDisplay.textContent = sorted.join(' · ');
+            }
+            document.getElementById('generateBtn').addEventListener('click', generate);
+            generate();
+        })();
+    </script>
+</body>
+</html>
