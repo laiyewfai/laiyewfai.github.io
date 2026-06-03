@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toto Generator — Eval Framework</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f0c29;
+            color: #e0e0e0;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+        }
+        .container { max-width: 960px; margin: 0 auto; }
+        h1 { color: #fff; font-size: 1.5rem; margin-bottom: 0.25rem; }
+        .sub { color: rgba(255,255,255,0.4); font-size: 0.85rem; margin-bottom: 2rem; }
+
+        /* Controls */
+        .controls {
+            display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;
+            margin-bottom: 2rem;
+        }
+        .controls label { font-size: 0.85rem; color: rgba(255,255,255,0.6); }
+        .controls select, .controls button {
+            padding: 0.6rem 1.2rem; border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 10px; font-size: 0.9rem; font-weight: 600;
+            background: rgba(255,255,255,0.06); color: #fff; cursor: pointer;
+        }
+        .controls select { min-width: 100px; }
+        .controls select option { background: #1a1a2e; }
+        .controls button {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #1a1a2e; border: none; box-shadow: 0 4px 20px rgba(247,151,30,0.3);
+        }
+        .controls button:active { transform: scale(0.97); }
+        .controls .status { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-left: auto; }
+
+        /* Summary cards */
+        .summary {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.75rem; margin-bottom: 2rem;
+        }
+        .card {
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 1rem 1.2rem;
+        }
+        .card .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.35); margin-bottom: 0.3rem; }
+        .card .value { font-size: 1.6rem; font-weight: 700; color: #fff; }
+        .card .value.green { color: #2ecc71; }
+        .card .value.red { color: #e74c3c; }
+        .card .value.yellow { color: #f1c40f; }
+        .card .subnote { font-size: 0.75rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem; }
+
+        /* Chi-squared verdict */
+        .verdict {
+            padding: 1rem 1.5rem; border-radius: 14px; margin-bottom: 2rem;
+            font-size: 0.95rem; line-height: 1.6;
+        }
+        .verdict.pass { background: rgba(46,204,113,0.1); border: 1px solid rgba(46,204,113,0.3); }
+        .verdict.warn { background: rgba(241,196,15,0.1); border: 1px solid rgba(241,196,15,0.3); }
+        .verdict.fail { background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.3); }
+
+        /* Integrity table */
+        .integrity { margin-bottom: 2rem; }
+        .integrity h2 { font-size: 1rem; color: rgba(255,255,255,0.6); margin-bottom: 0.75rem; }
+        .integrity table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        .integrity th, .integrity td {
+            padding: 0.6rem 1rem; text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+        .integrity th { color: rgba(255,255,255,0.35); font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.06em; }
+        .integrity td { color: rgba(255,255,255,0.7); }
+        .badge { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 700; }
+        .badge.pass { background: rgba(46,204,113,0.2); color: #2ecc71; }
+        .badge.fail { background: rgba(231,76,60,0.2); color: #e74c3c; }
+
+        /* Histogram */
+        .histogram { margin-bottom: 2rem; }
+        .histogram h2 { font-size: 1rem; color: rgba(255,255,255,0.6); margin-bottom: 0.75rem; }
+        .bar-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.2rem; font-size: 0.78rem; }
+        .bar-label { width: 2rem; text-align: right; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+        .bar-track { flex: 1; height: 16px; background: rgba(255,255,255,0.04); border-radius: 8px; overflow: hidden; position: relative; }
+        .bar-fill { height: 100%; border-radius: 8px; transition: width 0.4s ease; min-width: 2px; }
+        .bar-fill.normal { background: linear-gradient(90deg, #3498db, #2980b9); }
+        .bar-fill.hot { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .bar-fill.cold { background: linear-gradient(90deg, #95a5a6, #7f8c8d); }
+        .bar-count { width: 2.5rem; text-align: left; color: rgba(255,255,255,0.5); flex-shrink: 0; }
+        .expected-line { position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(255,255,255,0.2); }
+
+        /* Hot/Cold table */
+        .extremes { display: flex; gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .extremes > div { flex: 1; min-width: 200px; }
+        .extremes h3 { font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: 0.5rem; }
+        .extremes .num-list { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .extremes .num-tag {
+            padding: 0.3rem 0.7rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem;
+        }
+        .num-tag.hot { background: rgba(231,76,60,0.2); color: #e74c3c; }
+        .num-tag.cold { background: rgba(149,165,166,0.2); color: #95a5a6; }
+        .num-tag.miss { background: rgba(231,76,60,0.1); color: rgba(231,76,60,0.5); text-decoration: line-through; }
+
+        .detail-link { color: rgba(255,255,255,0.3); font-size: 0.8rem; margin-top: 1rem; }
+        .detail-link a { color: #3498db; text-decoration: none; }
+        .detail-link a:hover { text-decoration: underline; }
+
+        /* Full results (collapsible) */
+        .full-draws { margin-bottom: 2rem; }
+        .full-draws details { background: rgba(255,255,255,0.02); border-radius: 10px; padding: 0.5rem 1rem; }
+        .full-draws summary { cursor: pointer; color: rgba(255,255,255,0.4); font-size: 0.85rem; }
+        .full-draws .draw-line { font-family: monospace; font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.8; }
+        .full-draws .draw-line .num { display: inline-block; width: 2ch; text-align: right; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎲 Toto Generator — Eval Framework</h1>
+    <p class="sub">Statistical evaluation for the Singapore Toto number generator (<a href="https://laiyewfai.github.io/toto.html" target="_blank" style="color:#3498db;">source</a>)</p>
+
+    <div class="controls">
+        <label for="drawCount">Draws:</label>
+        <select id="drawCount">
+            <option value="30">30</option>
+            <option value="100">100</option>
+            <option value="500">500</option>
+            <option value="1000">1,000</option>
+            <option value="10000">10,000</option>
+        </select>
+        <button id="runBtn">▶ Run Evaluation</button>
+        <span class="status" id="status">Ready</span>
+    </div>
+
+    <div id="results" class="hidden">
+        <div class="summary" id="summaryCards"></div>
+        <div class="verdict" id="verdict"></div>
+
+        <div class="integrity">
+            <h2>🔒 Integrity Checks</h2>
+            <table><thead><tr>
+                <th>Check</th><th>Result</th><th>Details</th>
+            </tr></thead><tbody id="integrityBody"></tbody></table>
+        </div>
+
+        <div class="extremes">
+            <div>
+                <h3>🔥 Hottest (highest frequency)</h3>
+                <div class="num-list" id="hotList"></div>
+            </div>
+            <div>
+                <h3>❄️ Coldest (lowest frequency)</h3>
+                <div class="num-list" id="coldList"></div>
+            </div>
+        </div>
+
+        <div class="histogram">
+            <h2>📊 Frequency Histogram</h2>
+            <div id="histogram"></div>
+        </div>
+
+        <div class="full-draws">
+            <details>
+                <summary>📋 All draws</summary>
+                <div id="drawList"></div>
+            </details>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ── Generator (identical to toto.html) ──
+    function draw() {
+        const s = new Set();
+        while (s.size < 6) s.add(Math.floor(Math.random() * 49) + 1);
+        return [...s].sort((a, b) => a - b);
+    }
+
+    // ── Chi-squared critical values (α=0.05, df=48) ──
+    // χ²(48, 0.05) ≈ 65.17
+    const CHI2_CRIT = 65.17;
+    // χ²(48, 0.01) ≈ 73.68
+    const CHI2_CRIT_001 = 73.68;
+
+    // ── Stats helpers ──
+    function chiSquared(observed, expected) {
+        return observed.reduce((sum, o) => sum + ((o - expected) ** 2) / expected, 0);
+    }
+
+    function runEvaluation(N) {
+        const draws = [];
+        const freq = new Array(49).fill(0);
+        const gapTrack = new Array(49).fill(-1);
+        const gaps = new Array(49).fill(null).map(() => []);
+        const lastSeen = new Array(49).fill(-1);
+
+        for (let i = 0; i < N; i++) {
+            const d = draw();
+            draws.push(d);
+            for (const n of d) {
+                const idx = n - 1;
+                freq[idx]++;
+                if (lastSeen[idx] !== -1) {
+                    gaps[idx].push(i - lastSeen[idx] - 1);
+                }
+                lastSeen[idx] = i;
+            }
+        }
+
+        // Integrity
+        const dupes = draws.filter(d => new Set(d).size !== 6).length;
+        const outOfRange = draws.filter(d => d.some(n => n < 1 || n > 49)).length;
+        const wrongCount = draws.filter(d => d.length !== 6).length;
+        const uniqueNums = freq.filter(f => f > 0).length;
+        const zeroNums = freq.map((f, i) => f === 0 ? i + 1 : null).filter(x => x !== null);
+
+        // Stats
+        const total = N * 6;
+        const expected = total / 49;
+        const mean = total / 49;
+        const variance = freq.reduce((sum, f) => sum + (f - mean) ** 2, 0) / 49;
+        const stddev = Math.sqrt(variance);
+
+        // Chi-squared
+        const chi2 = chiSquared(freq, expected);
+        const pct = (chi2 / CHI2_CRIT * 100).toFixed(1);
+
+        // Gap analysis
+        const maxGaps = gaps.map((g, i) => ({
+            num: i + 1,
+            maxGap: g.length > 0 ? Math.max(...g) : N,
+            count: freq[i]
+        }));
+        const maxStreak = maxGaps.reduce((a, b) => a.maxGap > b.maxGap ? a : b);
+
+        // Hot/cold
+        const sortedByFreq = freq.map((f, i) => ({ num: i + 1, freq: f }))
+            .sort((a, b) => b.freq - a.freq);
+        const hot = sortedByFreq.slice(0, 5);
+        const cold = sortedByFreq.filter(s => s.freq > 0).slice(-5).reverse();
+
+        // Color for bars
+        const coldThreshold = Math.max(0, Math.floor(expected * 0.5));
+        const hotThreshold = Math.ceil(expected * 1.5);
+
+        return {
+            N, draws, freq, expected,
+            dupes, outOfRange, wrongCount, uniqueNums, zeroNums,
+            stddev, chi2, pct,
+            hot, cold, maxStreak, gaps,
+            coldThreshold, hotThreshold
+        };
+    }
+
+    function render(r) {
+        // ── Summary cards ──
+        const cards = [
+            { label: 'Total Draws', value: r.N.toLocaleString(), cls: '' },
+            { label: 'Total Numbers', value: (r.N * 6).toLocaleString(), cls: '' },
+            { label: 'Unique (of 49)', value: `${r.uniqueNums} / 49`, cls: r.uniqueNums === 49 ? 'green' : 'yellow', sub: r.uniqueNums === 49 ? 'All 49 appeared' : `${r.zeroNums.length} missing` },
+            { label: 'Mean Freq', value: r.expected.toFixed(2), cls: '' },
+            { label: 'Std Dev', value: r.stddev.toFixed(2), cls: '', sub: `expected ~${Math.sqrt(r.expected).toFixed(2)}` },
+            { label: 'χ²', value: r.chi2.toFixed(2), cls: r.chi2 < 65.17 ? 'green' : r.chi2 < 73.68 ? 'yellow' : 'red', sub: `crit(α=0.05): 65.17` },
+        ];
+
+        const cardsEl = document.getElementById('summaryCards');
+        cardsEl.innerHTML = cards.map(c => `
+            <div class="card">
+                <div class="label">${c.label}</div>
+                <div class="value ${c.cls}">${c.value}</div>
+                ${c.sub ? `<div class="subnote">${c.sub}</div>` : ''}
+            </div>
+        `).join('');
+
+        // ── Verdict ──
+        const verdictEl = document.getElementById('verdict');
+        if (r.chi2 < 65.17) {
+            verdictEl.className = 'verdict pass';
+            verdictEl.innerHTML = `<strong>✅ PASS — No statistical evidence of bias</strong><br>
+                χ² = ${r.chi2.toFixed(2)} is below the critical value of 65.17 (α = 0.05, df = 48).
+                The observed frequency distribution is consistent with a uniform random process.`;
+        } else if (r.chi2 < 73.68) {
+            verdictEl.className = 'verdict warn';
+            verdictEl.innerHTML = `<strong>⚠️ BORDERLINE — χ² exceeds 0.05 threshold</strong><br>
+                χ² = ${r.chi2.toFixed(2)} is above the α = 0.05 critical value (65.17) but below α = 0.01 (73.68).
+                This could indicate slight bias, but is more likely a false positive at this sample size.
+                Run again or increase draw count to confirm.`;
+        } else {
+            verdictEl.className = 'verdict fail';
+            verdictEl.innerHTML = `<strong>❌ FAIL — χ² exceeds α = 0.01 threshold</strong><br>
+                χ² = ${r.chi2.toFixed(2)} exceeds ${CHI2_CRIT_001} (α = 0.01, df = 48).
+                This is strong evidence the distribution deviates from uniform randomness.
+                The generator may have bias.`;
+        }
+
+        // ── Integrity table ──
+        const integBody = document.getElementById('integrityBody');
+        const checks = [
+            { check: 'Duplicates per draw', result: r.dupes === 0 ? '✅ PASS' : `❌ FAIL (${r.dupes})`, detail: r.dupes === 0 ? '0 draws with repeated numbers' : `${r.dupes} draws had duplicates` },
+            { check: 'Numbers in range 1–49', result: r.outOfRange === 0 ? '✅ PASS' : `❌ FAIL (${r.outOfRange})`, detail: r.outOfRange === 0 ? 'All numbers valid' : `${r.outOfRange} draws had out-of-range numbers` },
+            { check: 'Exactly 6 per draw', result: r.wrongCount === 0 ? '✅ PASS' : `❌ FAIL (${r.wrongCount})`, detail: r.wrongCount === 0 ? 'All draws have 6 numbers' : `${r.wrongCount} draws had ≠6 numbers` },
+            { check: 'All 49 numbers seen', result: r.uniqueNums === 49 ? '✅ PASS' : `⚠️ ${r.uniqueNums}/49`, detail: r.uniqueNums === 49 ? 'Every number 1–49 appeared' : `Missing: ${r.zeroNums.join(', ')}` },
+        ];
+        integBody.innerHTML = checks.map(c => `
+            <tr><td>${c.check}</td><td><span class="badge ${c.result.startsWith('✅') ? 'pass' : 'fail'}">${c.result}</span></td><td>${c.detail}</td></tr>
+        `).join('');
+
+        // ── Hot/Cold ──
+        const hotEl = document.getElementById('hotList');
+        hotEl.innerHTML = r.hot.map(h => `<span class="num-tag hot">${h.num} (${h.freq}x)</span>`).join('');
+
+        const coldEl = document.getElementById('coldList');
+        coldEl.innerHTML = r.cold.map(c => `<span class="num-tag cold">${c.num} (${c.freq}x)</span>`).join('');
+        if (r.zeroNums.length) {
+            coldEl.innerHTML += r.zeroNums.map(n => `<span class="num-tag miss">${n} (0x)</span>`).join('');
+        }
+
+        // ── Histogram ──
+        const histEl = document.getElementById('histogram');
+        const maxFreq = Math.max(...r.freq);
+        const rows = r.freq.map((f, i) => {
+            const num = i + 1;
+            const pct = (f / maxFreq * 100).toFixed(1);
+            let cls = 'normal';
+            if (f >= r.hotThreshold) cls = 'hot';
+            else if (f <= r.coldThreshold && f > 0) cls = 'cold';
+            else if (f === 0) cls = 'cold';
+            const expPct = (r.expected / maxFreq * 100).toFixed(1);
+            return `<div class="bar-row">
+                <span class="bar-label">${num}</span>
+                <div class="bar-track">
+                    <div class="bar-fill ${cls}" style="width:${pct}%"></div>
+                    <div class="expected-line" style="left:${expPct}%"></div>
+                </div>
+                <span class="bar-count">${f}</span>
+            </div>`;
+        }).join('');
+        histEl.innerHTML = rows + `<div style="font-size:0.75rem;color:rgba(255,255,255,0.25);margin-top:0.5rem;text-align:right;">Expected: ${r.expected.toFixed(2)} &nbsp;·&nbsp; Vertical line = expected</div>`;
+
+        // ── Full draws ──
+        const drawListEl = document.getElementById('drawList');
+        drawListEl.innerHTML = r.draws.map((d, i) => {
+            const nums = d.map(n => `<span class="num">${n}</span>`).join(' · ');
+            return `<div class="draw-line">${(i + 1).toString().padStart(4)}. ${nums}</div>`;
+        }).join('');
+
+        document.getElementById('results').classList.remove('hidden');
+    }
+
+    // ── Run ──
+    document.getElementById('runBtn').addEventListener('click', function() {
+        const N = parseInt(document.getElementById('drawCount').value);
+        const status = document.getElementById('status');
+        status.textContent = `Running ${N.toLocaleString()} draws...`;
+
+        // Use setTimeout to let the UI update before blocking
+        setTimeout(() => {
+            const result = runEvaluation(N);
+            render(result);
+            status.textContent = `Done — ${N.toLocaleString()} draws`;
+        }, 50);
+    });
+
+    // Auto-run on load with 100 draws
+    document.getElementById('drawCount').value = '100';
+    setTimeout(() => {
+        document.getElementById('runBtn').click();
+    }, 100);
+})();
+</script>
+</body>
+</html>
