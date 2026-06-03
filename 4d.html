@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4D Number Generator — Singapore Pools</title>
+<script src="4d.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -77,7 +78,7 @@
 <div class="container">
   <h1>🎰 4D Number Generator</h1>
   <p class="subtitle">Singapore Pools — random 4-digit numbers (0000–9999)</p>
-  <button class="gen-btn" onclick="generate()">Generate Numbers</button>
+  <button class="gen-btn" >Generate Numbers</button>
   <div id="results" style="display:none">
     <div class="section">
       <div class="section-title">Top Prizes</div>
@@ -99,29 +100,5 @@
     <a href="https://laiyewfai.github.io">laiyewfai.github.io</a>
   </footer>
 </div>
-<script>
-function rand4d() {
-  const n = Math.floor(Math.random() * 10000);
-  return String(n).padStart(4, '0');
-}
-function generate() {
-  const all = new Set();
-  while (all.size < 23) all.add(rand4d());
-  const nums = [...all];
-  document.getElementById('p1').textContent = nums[0];
-  document.getElementById('p2').textContent = nums[1];
-  document.getElementById('p3').textContent = nums[2];
-  const starters = nums.slice(3, 13);
-  const consos = nums.slice(13, 23);
-  document.getElementById('starter-grid').innerHTML = starters.map(n =>
-    '<div class="prize-row"><span class="label">Starter</span><span class="number">'+n+'</span></div>'
-  ).join('');
-  document.getElementById('conso-grid').innerHTML = consos.map(n =>
-    '<div class="prize-row"><span class="label">Consolation</span><span class="number">'+n+'</span></div>'
-  ).join('');
-  document.getElementById('results').style.display = 'block';
-}
-generate();
-</script>
 </body>
 </html>
