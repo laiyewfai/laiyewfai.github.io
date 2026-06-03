@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4D Number Generator — Singapore Pools</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+  .container { max-width: 640px; width: 100%; }
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    text-align: center;
+    color: #86868b;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .gen-btn {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    background: #0071e3;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 2rem;
+  }
+  .gen-btn:hover { background: #0077ed; }
+  .gen-btn:active { transform: scale(0.98); }
+  .section { margin-bottom: 1.5rem; }
+  .section-title {
+    font-size: 1rem; font-weight: 600; color: #6e6e73;
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;
+  }
+  .prize-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: #fff; padding: 0.85rem 1.25rem; border-radius: 10px;
+    margin-bottom: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .prize-row .label { font-weight: 600; font-size: 1rem; }
+  .prize-row .label small { font-weight: 400; color: #86868b; }
+  .prize-row .number {
+    font-size: 1.5rem; font-weight: 700;
+    font-family: 'SF Mono', 'Menlo', monospace; letter-spacing: 0.15em;
+    color: #1d1d1f;
+  }
+  .prize-row.top .number { color: #c0392b; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+  .grid .prize-row { margin-bottom: 0; }
+  footer { margin-top: 2rem; text-align: center; color: #86868b; font-size: 0.8rem; }
+  footer a { color: #0071e3; text-decoration: none; }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr; }
+    .prize-row .number { font-size: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🎰 4D Number Generator</h1>
+  <p class="subtitle">Singapore Pools — random 4-digit numbers (0000–9999)</p>
+  <button class="gen-btn" onclick="generate()">Generate Numbers</button>
+  <div id="results" style="display:none">
+    <div class="section">
+      <div class="section-title">Top Prizes</div>
+      <div class="prize-row top"><span class="label">🥇 1st Prize</span><span class="number" id="p1">—</span></div>
+      <div class="prize-row top"><span class="label">🥈 2nd Prize</span><span class="number" id="p2">—</span></div>
+      <div class="prize-row top"><span class="label">🥉 3rd Prize</span><span class="number" id="p3">—</span></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Starters</div>
+      <div class="grid" id="starter-grid"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Consolation</div>
+      <div class="grid" id="conso-grid"></div>
+    </div>
+  </div>
+  <footer>
+    For entertainment only. Not affiliated with Singapore Pools.<br>
+    <a href="https://laiyewfai.github.io">laiyewfai.github.io</a>
+  </footer>
+</div>
+<script>
+function rand4d() {
+  const n = Math.floor(Math.random() * 10000);
+  return String(n).padStart(4, '0');
+}
+function generate() {
+  const all = new Set();
+  while (all.size < 23) all.add(rand4d());
+  const nums = [...all];
+  document.getElementById('p1').textContent = nums[0];
+  document.getElementById('p2').textContent = nums[1];
+  document.getElementById('p3').textContent = nums[2];
+  const starters = nums.slice(3, 13);
+  const consos = nums.slice(13, 23);
+  document.getElementById('starter-grid').innerHTML = starters.map(n =>
+    '<div class="prize-row"><span class="label">Starter</span><span class="number">'+n+'</span></div>'
+  ).join('');
+  document.getElementById('conso-grid').innerHTML = consos.map(n =>
+    '<div class="prize-row"><span class="label">Consolation</span><span class="number">'+n+'</span></div>'
+  ).join('');
+  document.getElementById('results').style.display = 'block';
+}
+generate();
+</script>
+</body>
+</html>
