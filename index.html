@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SG Pools Tools — 4D & Toto</title>
+  <title>Yew Fai's Tools</title>
   <style>
     :root {
       --bg: #0f0f12;
@@ -17,46 +17,84 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 2rem 1rem;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+      padding: 3rem 1rem 2rem;
     }
-    .hero { text-align: center; margin-bottom: 2.5rem; }
-    .hero h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
-    .hero p { color: var(--muted); font-size: 0.95rem; }
-    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 640px; width: 100%; }
+    .hero { text-align: center; margin-bottom: 0.5rem; }
+    .hero h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; }
+    .hero p { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
+    .section { max-width: 640px; width: 100%; margin-top: 2rem; }
+    .section-title {
+      font-size: 0.8rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.75rem;
+    }
+    .cards { display: grid; gap: 1rem; }
     .card {
       background: var(--card-bg); border: 1px solid var(--border);
-      border-radius: 1.5rem; padding: 2rem; text-align: center;
-      transition: transform 0.2s, border-color 0.2s; cursor: pointer;
-      text-decoration: none; color: inherit;
+      border-radius: 1rem; padding: 1.25rem 1.5rem;
+      text-decoration: none; color: inherit; cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex; align-items: center; gap: 1rem;
     }
-    .card:hover { transform: translateY(-4px); border-color: var(--accent); }
-    .card .icon { font-size: 3rem; margin-bottom: 0.75rem; }
-    .card h2 { font-size: 1.25rem; margin-bottom: 0.5rem; }
-    .card p { color: var(--muted); font-size: 0.85rem; }
+    .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+    .card .icon { font-size: 2rem; min-width: 2.5rem; text-align: center; }
+    .card .body h2 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .card .body p { color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+    .card .body .url { color: rgba(255,255,255,0.2); font-size: 0.7rem; font-family: 'SF Mono', Menlo, monospace; margin-top: 0.15rem; }
     footer { margin-top: 3rem; color: var(--muted); font-size: 0.75rem; text-align: center; }
   </style>
 </head>
 <body>
   <div class="hero">
-    <h1>🎰 SG Pools Tools</h1>
-    <p>Quick number generators for Singapore Pools games</p>
+    <h1>🧰 Yew Fai's Tools</h1>
+    <p>Tools, references & thought experiments</p>
   </div>
-  <div class="cards">
-    <a href="4d.html" class="card">
-      <div class="icon">🔢</div>
-      <h2>4D Generator</h2>
-      <p>Random 4-digit numbers (0000–9999)<br>Top 3 • Starters • Consolation</p>
-    </a>
-    <a href="toto.html" class="card">
-      <div class="icon">🀄</div>
-      <h2>Toto Generator</h2>
-      <p>6/49 + Additional Number<br>QuickPick options & history</p>
-    </a>
+
+  <div class="section">
+    <div class="section-title">Lottery Generators</div>
+    <div class="cards">
+      <a href="4d.html" class="card">
+        <div class="icon">🔢</div>
+        <div class="body">
+          <h2>4D Number Generator</h2>
+          <p>Random 4-digit numbers (0000–9999) — Top 3, Starters & Consolation. Includes session history.</p>
+        </div>
+      </a>
+      <a href="toto.html" class="card">
+        <div class="icon">🀄</div>
+        <div class="body">
+          <h2>Toto Number Generator</h2>
+          <p>6/49 + Additional Number with Ordinary, System 7 & System 8 QuickPick options. Includes session history.</p>
+        </div>
+      </a>
+    </div>
   </div>
-  <footer>For entertainment only. Not affiliated with Singapore Pools.</footer>
+
+  <div class="section">
+    <div class="section-title">Learning & Reference</div>
+    <div class="cards">
+      <a href="https://laiyewfai.github.io/Knowledge%20Graph%20of%20AI%20Engineering.html" class="card">
+        <div class="icon">🧠</div>
+        <div class="body">
+          <h2>AI Engineering Knowledge Graph</h2>
+          <p>Interactive mind map of AI engineering concepts — Consultant Proposal Assistant use case.</p>
+          <div class="url">/Knowledge Graph of AI Engineering.html</div>
+        </div>
+      </a>
+      <a href="https://laiyewfai.github.io/sage-wisdom/" class="card">
+        <div class="icon">📜</div>
+        <div class="body">
+          <h2>40 Wisdoms</h2>
+          <p>Curated wisdom from Seneca, Munger, Taleb & Lao Tzu — filtered. Not taught. Lived.</p>
+          <div class="url">/sage-wisdom/</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <footer>
+    <a href="https://laiyewfai.github.io" style="color:var(--muted);text-decoration:none;">laiyewfai.github.io</a>
+  </footer>
 </body>
 </html>
