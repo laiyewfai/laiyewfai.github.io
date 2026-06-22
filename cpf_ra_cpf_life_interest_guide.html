@@ -1,622 +1,900 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CPF RA & CPF LIFE: Interest, Payouts and Annuity Timing</title>
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --paper: #ffffff;
-      --ink: #172033;
-      --muted: #5b6475;
-      --line: #dce3ef;
-      --blue: #123b7a;
-      --blue2: #1f5fbf;
-      --soft-blue: #eaf2ff;
-      --green: #0d6b57;
-      --soft-green: #e9f7f3;
-      --amber: #8a5a00;
-      --soft-amber: #fff6df;
-      --shadow: 0 18px 45px rgba(21, 38, 70, 0.10);
-      --radius: 18px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Helvetica, Arial, sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 10% -10%, #dfeaff 0, rgba(223,234,255,0) 36%),
-        radial-gradient(circle at 92% 0%, #e8f8f3 0, rgba(232,248,243,0) 34%),
-        var(--bg);
-      line-height: 1.55;
-    }
-
-    .page {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 42px 22px 56px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, #102c5f 0%, #174a96 58%, #0d6b57 100%);
-      color: #fff;
-      border-radius: 28px;
-      padding: 42px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      right: -70px;
-      top: -80px;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.12);
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      padding: 7px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.15);
-      color: #edf5ff;
-      font-size: 13px;
-      font-weight: 650;
-      letter-spacing: .02em;
-      margin-bottom: 18px;
-    }
-
-    h1 {
-      margin: 0 0 14px;
-      font-size: clamp(32px, 4vw, 52px);
-      line-height: 1.04;
-      letter-spacing: -0.035em;
-      max-width: 850px;
-    }
-
-    .hero p {
-      margin: 0;
-      max-width: 820px;
-      color: rgba(255,255,255,.86);
-      font-size: 18px;
-    }
-
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 28px;
-    }
-
-    .pill {
-      border: 1px solid rgba(255,255,255,.28);
-      border-radius: 999px;
-      padding: 8px 12px;
-      color: rgba(255,255,255,.9);
-      background: rgba(255,255,255,.08);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .section {
-      margin-top: 26px;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: 0 10px 28px rgba(21, 38, 70, 0.06);
-      padding: 28px;
-    }
-
-    .section h2 {
-      margin: 0 0 12px;
-      font-size: 25px;
-      letter-spacing: -0.02em;
-    }
-
-    .section h3 {
-      margin: 26px 0 10px;
-      font-size: 18px;
-      letter-spacing: -0.01em;
-    }
-
-    .lead {
-      color: var(--muted);
-      font-size: 16px;
-      margin: 0 0 18px;
-    }
-
-    .answer-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 18px;
-    }
-
-    .answer-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-      background: #fbfdff;
-    }
-
-    .answer-card strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--blue);
-      font-size: 15px;
-    }
-
-    .answer-card p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    .timeline {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      margin-top: 22px;
-    }
-
-    .time-card {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 18px;
-      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-      position: relative;
-      min-height: 178px;
-    }
-
-    .age {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 54px;
-      height: 54px;
-      border-radius: 16px;
-      background: var(--soft-blue);
-      color: var(--blue);
-      font-weight: 800;
-      margin-bottom: 14px;
-      font-size: 18px;
-    }
-
-    .time-card h3 {
-      margin: 0 0 8px;
-      font-size: 17px;
-    }
-
-    .time-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .callout {
-      border-radius: 18px;
-      padding: 18px 20px;
-      margin: 20px 0 0;
-      border: 1px solid #b9d8cc;
-      background: var(--soft-green);
-      color: #12372f;
-    }
-
-    .callout strong {
-      color: var(--green);
-    }
-
-    .warning {
-      border-color: #eedc9d;
-      background: var(--soft-amber);
-      color: #453507;
-    }
-
-    .warning strong { color: var(--amber); }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      margin-top: 18px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 820px;
-      background: #fff;
-    }
-
-    th, td {
-      text-align: left;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-    }
-
-    th {
-      background: #f1f5fb;
-      color: #24324b;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-
-    td {
-      font-size: 15px;
-    }
-
-    tr:last-child td { border-bottom: 0; }
-
-    .num {
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .tag {
-      display: inline-block;
-      border-radius: 999px;
-      background: var(--soft-blue);
-      color: var(--blue);
-      padding: 4px 9px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 5px;
-    }
-
-    .faq {
-      display: grid;
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .qa {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 20px;
-      background: #fff;
-    }
-
-    .qa .q {
-      margin: 0 0 8px;
-      font-weight: 800;
-      color: var(--blue);
-      font-size: 17px;
-    }
-
-    .qa .a {
-      margin: 0;
-      color: #30394d;
-    }
-
-    .split {
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .mini-list {
-      margin: 12px 0 0;
-      padding-left: 20px;
-      color: var(--muted);
-    }
-
-    .mini-list li { margin: 7px 0; }
-
-    .source-list {
-      margin: 14px 0 0;
-      padding-left: 22px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .source-list li { margin: 8px 0; }
-
-    a {
-      color: var(--blue2);
-      text-decoration: none;
-      font-weight: 650;
-    }
-
-    a:hover { text-decoration: underline; }
-
-    .footer {
-      margin-top: 26px;
-      color: var(--muted);
-      font-size: 13px;
-      text-align: center;
-    }
-
-    @media (max-width: 850px) {
-      .hero { padding: 30px; border-radius: 22px; }
-      .answer-grid, .timeline, .split { grid-template-columns: 1fr; }
-      .section { padding: 22px; }
-    }
-
-    @media print {
-      body { background: #fff; }
-      .page { max-width: none; padding: 0; }
-      .hero, .section { box-shadow: none; break-inside: avoid; }
-      a { color: #000; text-decoration: underline; }
-    }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <section class="hero">
-      <div class="eyebrow">CPF Retirement Account · CPF LIFE · Interest Mechanics</div>
-      <h1>What happens to your CPF RA interest from age 55, 65 and beyond 70?</h1>
-      <p>
-        A self-contained guide to the questions discussed: whether RA interest is “returned”,
-        when CPF LIFE annuity premium is deducted, and whether interest continues after payouts start.
-      </p>
-      <div class="hero-meta">
-        <span class="pill">Prepared as of 23 June 2026</span>
-        <span class="pill">For members turning 55 in 2026</span>
-        <span class="pill">Uses Basic / Full / Enhanced RA levels</span>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Executive summary</h2>
-      <p class="lead">
-        The key point is simple: the interest is not usually paid to you as a separate cash item.
-        It is accumulated in your RA before payouts start, and then factored into CPF LIFE payouts after the annuity premium is deducted.
-      </p>
-
-      <div class="answer-grid">
-        <div class="answer-card">
-          <strong>1. Age 55: RA is created</strong>
-          <p>Your Retirement Account is created at 55. Savings from your Special Account, then Ordinary Account, are transferred to your RA up to the Full Retirement Sum.</p>
-        </div>
-        <div class="answer-card">
-          <strong>2. Age 65–70: payout decision window</strong>
-          <p>You may start CPF LIFE payouts from 65, or defer up to 70. The CPF LIFE premium is deducted one week before payouts start.</p>
-        </div>
-        <div class="answer-card">
-          <strong>3. After payouts start: interest continues</strong>
-          <p>Your CPF LIFE premium continues to earn CPF interest. The interest is factored into monthly payouts and supports lifelong payouts.</p>
-        </div>
-      </div>
-
-      <div class="callout">
-        <strong>Plain-English answer:</strong> Your 4% RA interest from 55 to 65 is not lost, but it is also not normally paid out as a separate cheque at 65. It becomes part of the retirement savings that support your CPF LIFE monthly payout.
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>2026 retirement sum levels used in this guide</h2>
-      <p class="lead">
-        Instead of using a single S$300,000 example, this guide uses the three CPF retirement sum reference levels for members turning 55 in 2026.
-      </p>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Reference level</th>
-              <th>Amount in RA at age 55</th>
-              <th>CPF published estimated monthly payout from age 65</th>
-              <th>What it represents</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><span class="tag">Basic RA level</span><br>Basic Retirement Sum (BRS)</td>
-              <td class="num">S$110,200</td>
-              <td class="num">S$950/month</td>
-              <td>Reference amount for basic retirement needs, excluding rental expenses.</td>
-            </tr>
-            <tr>
-              <td><span class="tag">Full RA level</span><br>Full Retirement Sum (FRS)</td>
-              <td class="num">S$220,400</td>
-              <td class="num">S$1,780/month</td>
-              <td>Main CPF reference point for retirement adequacy.</td>
-            </tr>
-            <tr>
-              <td><span class="tag">Enhanced RA level</span><br>Enhanced Retirement Sum (ERS)</td>
-              <td class="num">S$440,800</td>
-              <td class="num">S$3,440/month</td>
-              <td>Maximum RA top-up level in 2026 for higher monthly payouts.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="warning">
-        <strong>Important:</strong> CPF’s estimated monthly payouts above are based on the CPF LIFE Standard Plan and a CPF interest rate of 4%. Actual payouts depend on CPF’s official computation, your payout start age, plan choice, balances, and prevailing rules.
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Timeline: what happens at each age?</h2>
-
-      <div class="timeline">
-        <div class="time-card">
-          <div class="age">55</div>
-          <h3>RA is created</h3>
-          <p>Your RA is opened. SA savings, then OA savings, are transferred to your RA up to the FRS. RA savings earn CPF interest and are meant to provide future payouts.</p>
-        </div>
-        <div class="time-card">
-          <div class="age">55–65</div>
-          <h3>Interest accumulates</h3>
-          <p>The RA continues to earn interest. The accumulated interest becomes part of the RA balance that supports future monthly payouts.</p>
-        </div>
-        <div class="time-card">
-          <div class="age">65–70</div>
-          <h3>Payout start window</h3>
-          <p>You can start payouts from 65 or defer up to 70. If you defer CPF LIFE payouts, they can increase by up to 7% for each year deferred.</p>
-        </div>
-        <div class="time-card">
-          <div class="age">70+</div>
-          <h3>Payouts must start</h3>
-          <p>If not already started, payouts start automatically at 70. CPF LIFE premium continues earning interest, which is factored into monthly payouts.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Illustrative accumulation if payouts are deferred</h2>
-      <p class="lead">
-        The table below is a simple illustration only. It applies 4% per year to the 2026 retirement sum amounts and ignores extra interest, future contributions, withdrawals, CPF LIFE actuarial pricing, policy changes and personal circumstances.
-      </p>
-
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Reference level</th>
-              <th>At age 55</th>
-              <th>Illustrative amount at age 65</th>
-              <th>Illustrative amount at age 70</th>
-              <th>Interpretation</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Basic RA level / BRS</td>
-              <td class="num">S$110,200</td>
-              <td class="num">≈ S$163,123</td>
-              <td class="num">≈ S$198,464</td>
-              <td>Shows how the basic reference amount could grow if left to compound before payout start.</td>
-            </tr>
-            <tr>
-              <td>Full RA level / FRS</td>
-              <td class="num">S$220,400</td>
-              <td class="num">≈ S$326,246</td>
-              <td class="num">≈ S$396,928</td>
-              <td>Shows the same concept for the full retirement reference amount.</td>
-            </tr>
-            <tr>
-              <td>Enhanced RA level / ERS</td>
-              <td class="num">S$440,800</td>
-              <td class="num">≈ S$652,492</td>
-              <td class="num">≈ S$793,856</td>
-              <td>Shows the same concept for the enhanced top-up level.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="callout">
-        <strong>How to read this table:</strong> This is not a CPF payout quotation. It is only a simplified compounding illustration to show why interest earned before payout start is economically meaningful.
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Questions and answers</h2>
-
-      <div class="faq">
-        <div class="qa">
-          <p class="q">Q1. After my CPF RA is created at age 55, will I get back the 4% interest accumulated from age 55 to 65?</p>
-          <p class="a">
-            Yes, you benefit from it, but not usually as a separate interest payout. The interest is added into your RA balance over time. When you start retirement payouts, the larger RA balance supports your CPF LIFE monthly payout.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q2. Does CPF buy the CPF LIFE annuity at age 55 or age 65?</p>
-          <p class="a">
-            Not at age 55. Age 55 is when the RA is created. CPF LIFE premium is deducted from your RA one week before you start payouts, which can be any time from age 65 to 70.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q3. If I choose the CPF LIFE Standard or Escalating Plan, what happens to my RA?</p>
-          <p class="a">
-            For the Standard and Escalating Plans, the savings in your RA are deducted as the CPF LIFE annuity premium when payouts start. Your monthly payouts are then paid for as long as you live.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q4. What if I choose the CPF LIFE Basic Plan?</p>
-          <p class="a">
-            Under the Basic Plan, only about 10% to 20% of RA savings is deducted as the CPF LIFE premium when payouts start. The remaining 80% to 90% remains in the RA and is used for monthly payouts until one month before you reach age 90. The Basic Plan generally gives lower monthly payouts than the Standard Plan.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q5. Is interest still earned after age 65?</p>
-          <p class="a">
-            Yes. If you defer payouts from 65 to 70, your retirement savings continue to support a higher future payout. CPF states that CPF LIFE payouts increase by up to 7% for each year of deferral.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q6. Is interest still earned after age 70?</p>
-          <p class="a">
-            Yes, but payouts cannot be deferred beyond 70. If payouts have not started by then, they start automatically. CPF LIFE premium continues to earn CPF interest, and the interest is factored into monthly payouts rather than paid separately.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q7. What happens if my CPF LIFE premium is depleted while I am still alive?</p>
-          <p class="a">
-            CPF LIFE is designed to provide payouts for life. CPF explains that monthly payouts are first paid from your CPF LIFE premium. When that premium is depleted, payouts continue from accumulated pooled interest, no matter how long you live.
-          </p>
-        </div>
-
-        <div class="qa">
-          <p class="q">Q8. Does the interest on CPF LIFE premium go to my beneficiaries when I pass away?</p>
-          <p class="a">
-            CPF states that if you pass away before your CPF LIFE premium is exhausted, any remaining premium balance and remaining CPF savings are distributed to your beneficiaries. However, the interest on CPF LIFE premiums supports the lifelong payout pool and is not treated as a separate bequest item.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Practical interpretation for retirement planning</h2>
-      <div class="split">
-        <div>
-          <h3>What you should focus on</h3>
-          <ul class="mini-list">
-            <li><strong>RA amount at age 55:</strong> BRS, FRS or ERS level determines the base from which future payouts are estimated.</li>
-            <li><strong>Payout start age:</strong> Starting at 65 gives earlier income; deferring up to 70 can increase monthly payouts.</li>
-            <li><strong>CPF LIFE plan choice:</strong> Standard gives steady payouts, Escalating grows 2% yearly, Basic starts lower and leaves more in RA initially.</li>
-            <li><strong>Separate cash vs lifelong income:</strong> RA interest is best understood as supporting monthly retirement income, not as a separate fixed deposit-style interest payout.</li>
-          </ul>
-        </div>
-        <div>
-          <h3>One-line conclusion</h3>
-          <div class="callout" style="margin-top:12px;">
-            CPF does not “take away” the interest. The interest is embedded into the RA / CPF LIFE mechanics and used to support higher and lifelong monthly payouts.
-          </div>
-          <div class="warning" style="margin-top:14px;">
-            This guide is explanatory and not personal financial advice. For exact personal projections, use CPF’s Retirement dashboard or CPF LIFE estimator.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Sources</h2>
-      <p class="lead">
-        Main facts in this page are based on CPF Board materials available as of 23 June 2026.
-      </p>
-      <ol class="source-list">
-        <li><a href="https://www.cpf.gov.sg/member/infohub/educational-resources/what-is-the-cpf-retirement-sum" target="_blank" rel="noopener">CPF Board — What is the CPF retirement sum?</a> Used for BRS, FRS, ERS and CPF published payout estimates for members turning 55 in 2026.</li>
-        <li><a href="https://www.cpf.gov.sg/member/retirement-income/milestones/reaching-age-55" target="_blank" rel="noopener">CPF Board — Reaching age 55</a> Used for RA creation and transfer mechanics.</li>
-        <li><a href="https://www.cpf.gov.sg/member/retirement-income/milestones/reaching-age-65" target="_blank" rel="noopener">CPF Board — Reaching age 65</a> Used for payout start, CPF LIFE premium deduction timing, deferral, and automatic start at age 70.</li>
-        <li><a href="https://www.cpf.gov.sg/member/infohub/educational-resources/cpf-life-premiums-how-does-it-work" target="_blank" rel="noopener">CPF Board — CPF LIFE premiums: how does it work?</a> Used for Standard, Escalating and Basic Plan premium mechanics.</li>
-        <li><a href="https://www.cpf.gov.sg/service/article/does-my-cpf-life-premium-continue-to-earn-interest" target="_blank" rel="noopener">CPF Board — Does my CPF LIFE premium continue to earn interest?</a> Used for the point that CPF LIFE premium continues to earn CPF interest.</li>
-        <li><a href="https://www.cpf.gov.sg/member/infohub/cpf-clarifies/policy-faqs/why-interest-earned-on-cpf-life-premium-not-paid-to-beneficiaries" target="_blank" rel="noopener">CPF Board — Why interest earned on CPF LIFE premium is not paid to beneficiaries</a> Used for risk-pooling and bequest explanation.</li>
-      </ol>
-    </section>
-
-    <p class="footer">
-      Prepared for personal reference. Figures and CPF rules may change; always check CPF Board for the latest official figures.
-    </p>
-  </main>
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>CPF RA & CPF LIFE: Interest, Payouts and Annuity Timing</title>
+        <style>
+            :root {
+                --bg: #f5f7fb;
+                --paper: #ffffff;
+                --ink: #172033;
+                --muted: #5b6475;
+                --line: #dce3ef;
+                --blue: #123b7a;
+                --blue2: #1f5fbf;
+                --soft-blue: #eaf2ff;
+                --green: #0d6b57;
+                --soft-green: #e9f7f3;
+                --amber: #8a5a00;
+                --soft-amber: #fff6df;
+                --shadow: 0 18px 45px rgba(21, 38, 70, 0.1);
+                --radius: 18px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Inter, Helvetica, Arial, sans-serif;
+                color: var(--ink);
+                background:
+                    radial-gradient(
+                        circle at 10% -10%,
+                        #dfeaff 0,
+                        rgba(223, 234, 255, 0) 36%
+                    ),
+                    radial-gradient(
+                        circle at 92% 0%,
+                        #e8f8f3 0,
+                        rgba(232, 248, 243, 0) 34%
+                    ),
+                    var(--bg);
+                line-height: 1.55;
+            }
+
+            .page {
+                max-width: 1120px;
+                margin: 0 auto;
+                padding: 42px 22px 56px;
+            }
+
+            .hero {
+                background: linear-gradient(
+                    135deg,
+                    #102c5f 0%,
+                    #174a96 58%,
+                    #0d6b57 100%
+                );
+                color: #fff;
+                border-radius: 28px;
+                padding: 42px;
+                box-shadow: var(--shadow);
+                position: relative;
+                overflow: hidden;
+            }
+
+            .hero::after {
+                content: "";
+                position: absolute;
+                right: -70px;
+                top: -80px;
+                width: 260px;
+                height: 260px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                gap: 8px;
+                align-items: center;
+                padding: 7px 12px;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.15);
+                color: #edf5ff;
+                font-size: 13px;
+                font-weight: 650;
+                letter-spacing: 0.02em;
+                margin-bottom: 18px;
+            }
+
+            h1 {
+                margin: 0 0 14px;
+                font-size: clamp(32px, 4vw, 52px);
+                line-height: 1.04;
+                letter-spacing: -0.035em;
+                max-width: 850px;
+            }
+
+            .hero p {
+                margin: 0;
+                max-width: 820px;
+                color: rgba(255, 255, 255, 0.86);
+                font-size: 18px;
+            }
+
+            .hero-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 12px;
+                margin-top: 28px;
+            }
+
+            .pill {
+                border: 1px solid rgba(255, 255, 255, 0.28);
+                border-radius: 999px;
+                padding: 8px 12px;
+                color: rgba(255, 255, 255, 0.9);
+                background: rgba(255, 255, 255, 0.08);
+                font-size: 13px;
+                font-weight: 600;
+            }
+
+            .section {
+                margin-top: 26px;
+                background: var(--paper);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                box-shadow: 0 10px 28px rgba(21, 38, 70, 0.06);
+                padding: 28px;
+            }
+
+            .section h2 {
+                margin: 0 0 12px;
+                font-size: 25px;
+                letter-spacing: -0.02em;
+            }
+
+            .section h3 {
+                margin: 26px 0 10px;
+                font-size: 18px;
+                letter-spacing: -0.01em;
+            }
+
+            .lead {
+                color: var(--muted);
+                font-size: 16px;
+                margin: 0 0 18px;
+            }
+
+            .answer-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+                margin-top: 18px;
+            }
+
+            .answer-card {
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                padding: 18px;
+                background: #fbfdff;
+            }
+
+            .answer-card strong {
+                display: block;
+                margin-bottom: 6px;
+                color: var(--blue);
+                font-size: 15px;
+            }
+
+            .answer-card p {
+                margin: 0;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            .timeline {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 14px;
+                margin-top: 22px;
+            }
+
+            .time-card {
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                padding: 18px;
+                background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+                position: relative;
+                min-height: 178px;
+            }
+
+            .age {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 54px;
+                height: 54px;
+                border-radius: 16px;
+                background: var(--soft-blue);
+                color: var(--blue);
+                font-weight: 800;
+                margin-bottom: 14px;
+                font-size: 18px;
+            }
+
+            .time-card h3 {
+                margin: 0 0 8px;
+                font-size: 17px;
+            }
+
+            .time-card p {
+                margin: 0;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            .callout {
+                border-radius: 18px;
+                padding: 18px 20px;
+                margin: 20px 0 0;
+                border: 1px solid #b9d8cc;
+                background: var(--soft-green);
+                color: #12372f;
+            }
+
+            .callout strong {
+                color: var(--green);
+            }
+
+            .warning {
+                border-color: #eedc9d;
+                background: var(--soft-amber);
+                color: #453507;
+            }
+
+            .warning strong {
+                color: var(--amber);
+            }
+
+            .table-wrap {
+                overflow-x: auto;
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                margin-top: 18px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 820px;
+                background: #fff;
+            }
+
+            th,
+            td {
+                text-align: left;
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--line);
+                vertical-align: top;
+            }
+
+            th {
+                background: #f1f5fb;
+                color: #24324b;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            td {
+                font-size: 15px;
+            }
+
+            tr:last-child td {
+                border-bottom: 0;
+            }
+
+            .num {
+                white-space: nowrap;
+                font-variant-numeric: tabular-nums;
+                font-weight: 700;
+                color: var(--ink);
+            }
+
+            .tag {
+                display: inline-block;
+                border-radius: 999px;
+                background: var(--soft-blue);
+                color: var(--blue);
+                padding: 4px 9px;
+                font-size: 12px;
+                font-weight: 700;
+                margin-bottom: 5px;
+            }
+
+            .faq {
+                display: grid;
+                gap: 14px;
+                margin-top: 18px;
+            }
+
+            .qa {
+                border: 1px solid var(--line);
+                border-radius: 18px;
+                padding: 20px;
+                background: #fff;
+            }
+
+            .qa .q {
+                margin: 0 0 8px;
+                font-weight: 800;
+                color: var(--blue);
+                font-size: 17px;
+            }
+
+            .qa .a {
+                margin: 0;
+                color: #30394d;
+            }
+
+            .split {
+                display: grid;
+                grid-template-columns: 1.1fr 0.9fr;
+                gap: 18px;
+                align-items: stretch;
+            }
+
+            .mini-list {
+                margin: 12px 0 0;
+                padding-left: 20px;
+                color: var(--muted);
+            }
+
+            .mini-list li {
+                margin: 7px 0;
+            }
+
+            .source-list {
+                margin: 14px 0 0;
+                padding-left: 22px;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            .source-list li {
+                margin: 8px 0;
+            }
+
+            a {
+                color: var(--blue2);
+                text-decoration: none;
+                font-weight: 650;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            .footer {
+                margin-top: 26px;
+                color: var(--muted);
+                font-size: 13px;
+                text-align: center;
+            }
+
+            @media (max-width: 850px) {
+                .hero {
+                    padding: 30px;
+                    border-radius: 22px;
+                }
+                .answer-grid,
+                .timeline,
+                .split {
+                    grid-template-columns: 1fr;
+                }
+                .section {
+                    padding: 22px;
+                }
+            }
+
+            @media print {
+                body {
+                    background: #fff;
+                }
+                .page {
+                    max-width: none;
+                    padding: 0;
+                }
+                .hero,
+                .section {
+                    box-shadow: none;
+                    break-inside: avoid;
+                }
+                a {
+                    color: #000;
+                    text-decoration: underline;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <main class="page">
+            <section class="hero">
+                <div class="eyebrow">
+                    CPF Retirement Account · CPF LIFE · Interest Mechanics
+                </div>
+                <h1>
+                    What happens to your CPF RA interest from age 55, 65 and
+                    beyond 70?
+                </h1>
+                <p>
+                    A self-contained guide to the questions discussed: whether
+                    RA interest is “returned”, when CPF LIFE annuity premium is
+                    deducted, and whether interest continues after payouts
+                    start.
+                </p>
+                <div class="hero-meta">
+                    <span class="pill">Prepared as of 23 June 2026</span>
+                    <span class="pill">For members turning 55 in 2026</span>
+                    <span class="pill"
+                        >Uses Basic / Full / Enhanced RA levels</span
+                    >
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Executive summary</h2>
+                <p class="lead">
+                    The key point is simple: the interest is not usually paid to
+                    you as a separate cash item. It is accumulated in your RA
+                    before payouts start, and then factored into CPF LIFE
+                    payouts after the annuity premium is deducted.
+                </p>
+
+                <div class="answer-grid">
+                    <div class="answer-card">
+                        <strong>1. Age 55: RA is created</strong>
+                        <p>
+                            Your Retirement Account is created at 55. Savings
+                            from your Special Account, then Ordinary Account,
+                            are transferred to your RA up to the Full Retirement
+                            Sum.
+                        </p>
+                    </div>
+                    <div class="answer-card">
+                        <strong>2. Age 65–70: payout decision window</strong>
+                        <p>
+                            You may start CPF LIFE payouts from 65, or defer up
+                            to 70. The CPF LIFE premium is deducted one week
+                            before payouts start.
+                        </p>
+                    </div>
+                    <div class="answer-card">
+                        <strong
+                            >3. After payouts start: interest continues</strong
+                        >
+                        <p>
+                            Your CPF LIFE premium continues to earn CPF
+                            interest. The interest is factored into monthly
+                            payouts and supports lifelong payouts.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="callout">
+                    <strong>Plain-English answer:</strong> Your 4% RA interest
+                    from 55 to 65 is not lost, but it is also not normally paid
+                    out as a separate cheque at 65. It becomes part of the
+                    retirement savings that support your CPF LIFE monthly
+                    payout.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>2026 retirement sum levels used in this guide</h2>
+                <p class="lead">
+                    This guide uses the three CPF retirement sum reference
+                    levels for members turning 55 in 2026.
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reference level</th>
+                                <th>Amount in RA at age 55</th>
+                                <th>
+                                    CPF published estimated monthly payout from
+                                    age 65
+                                </th>
+                                <th>What it represents</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span class="tag">Basic RA level</span
+                                    ><br />Basic Retirement Sum (BRS)
+                                </td>
+                                <td class="num">S$110,200</td>
+                                <td class="num">S$950/month</td>
+                                <td>
+                                    Reference amount for basic retirement needs,
+                                    excluding rental expenses.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="tag">Full RA level</span
+                                    ><br />Full Retirement Sum (FRS)
+                                </td>
+                                <td class="num">S$220,400</td>
+                                <td class="num">S$1,780/month</td>
+                                <td>
+                                    Main CPF reference point for retirement
+                                    adequacy.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="tag">Enhanced RA level</span
+                                    ><br />Enhanced Retirement Sum (ERS)
+                                </td>
+                                <td class="num">S$440,800</td>
+                                <td class="num">S$3,440/month</td>
+                                <td>
+                                    Maximum RA top-up level in 2026 for higher
+                                    monthly payouts.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="warning">
+                    <strong>Important:</strong> CPF’s estimated monthly payouts
+                    above are based on the CPF LIFE Standard Plan and a CPF
+                    interest rate of 4%. Actual payouts depend on CPF’s official
+                    computation, your payout start age, plan choice, balances,
+                    and prevailing rules.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Timeline: what happens at each age?</h2>
+
+                <div class="timeline">
+                    <div class="time-card">
+                        <div class="age">55</div>
+                        <h3>RA is created</h3>
+                        <p>
+                            Your RA is opened. SA savings, then OA savings, are
+                            transferred to your RA up to the FRS. RA savings
+                            earn CPF interest and are meant to provide future
+                            payouts.
+                        </p>
+                    </div>
+                    <div class="time-card">
+                        <div class="age">55–65</div>
+                        <h3>Interest accumulates</h3>
+                        <p>
+                            The RA continues to earn interest. The accumulated
+                            interest becomes part of the RA balance that
+                            supports future monthly payouts.
+                        </p>
+                    </div>
+                    <div class="time-card">
+                        <div class="age">65–70</div>
+                        <h3>Payout start window</h3>
+                        <p>
+                            You can start payouts from 65 or defer up to 70. If
+                            you defer CPF LIFE payouts, they can increase by up
+                            to 7% for each year deferred.
+                        </p>
+                    </div>
+                    <div class="time-card">
+                        <div class="age">70+</div>
+                        <h3>Payouts must start</h3>
+                        <p>
+                            If not already started, payouts start automatically
+                            at 70. CPF LIFE premium continues earning interest,
+                            which is factored into monthly payouts.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Illustrative accumulation if payouts are deferred</h2>
+                <p class="lead">
+                    The table below is a simple illustration only. It applies 4%
+                    per year to the 2026 retirement sum amounts and ignores
+                    extra interest, future contributions, withdrawals, CPF LIFE
+                    actuarial pricing, policy changes and personal
+                    circumstances.
+                </p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Reference level</th>
+                                <th>At age 55</th>
+                                <th>Illustrative amount at age 65</th>
+                                <th>Illustrative amount at age 70</th>
+                                <th>Interpretation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Basic RA level / BRS</td>
+                                <td class="num">S$110,200</td>
+                                <td class="num">≈ S$163,123</td>
+                                <td class="num">≈ S$198,464</td>
+                                <td>
+                                    Shows how the basic reference amount could
+                                    grow if left to compound before payout
+                                    start.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Full RA level / FRS</td>
+                                <td class="num">S$220,400</td>
+                                <td class="num">≈ S$326,246</td>
+                                <td class="num">≈ S$396,928</td>
+                                <td>
+                                    Shows the same concept for the full
+                                    retirement reference amount.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Enhanced RA level / ERS</td>
+                                <td class="num">S$440,800</td>
+                                <td class="num">≈ S$652,492</td>
+                                <td class="num">≈ S$793,856</td>
+                                <td>
+                                    Shows the same concept for the enhanced
+                                    top-up level.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="callout">
+                    <strong>How to read this table:</strong> This is not a CPF
+                    payout quotation. It is only a simplified compounding
+                    illustration to show why interest earned before payout start
+                    is economically meaningful.
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Questions and answers</h2>
+
+                <div class="faq">
+                    <div class="qa">
+                        <p class="q">
+                            Q1. After my CPF RA is created at age 55, will I get
+                            back the 4% interest accumulated from age 55 to 65?
+                        </p>
+                        <p class="a">
+                            Yes, you benefit from it, but not usually as a
+                            separate interest payout. The interest is added into
+                            your RA balance over time. When you start retirement
+                            payouts, the larger RA balance supports your CPF
+                            LIFE monthly payout.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q2. Does CPF buy the CPF LIFE annuity at age 55 or
+                            age 65?
+                        </p>
+                        <p class="a">
+                            Not at age 55. Age 55 is when the RA is created. CPF
+                            LIFE premium is deducted from your RA one week
+                            before you start payouts, which can be any time from
+                            age 65 to 70.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q3. If I choose the CPF LIFE Standard or Escalating
+                            Plan, what happens to my RA?
+                        </p>
+                        <p class="a">
+                            For the Standard and Escalating Plans, the savings
+                            in your RA are deducted as the CPF LIFE annuity
+                            premium when payouts start. Your monthly payouts are
+                            then paid for as long as you live.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q4. What if I choose the CPF LIFE Basic Plan?
+                        </p>
+                        <p class="a">
+                            Under the Basic Plan, only about 10% to 20% of RA
+                            savings is deducted as the CPF LIFE premium when
+                            payouts start. The remaining 80% to 90% remains in
+                            the RA and is used for monthly payouts until one
+                            month before you reach age 90. The Basic Plan
+                            generally gives lower monthly payouts than the
+                            Standard Plan.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q5. Is interest still earned after age 65?
+                        </p>
+                        <p class="a">
+                            Yes. If you defer payouts from 65 to 70, your
+                            retirement savings continue to support a higher
+                            future payout. CPF states that CPF LIFE payouts
+                            increase by up to 7% for each year of deferral.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q6. Is interest still earned after age 70?
+                        </p>
+                        <p class="a">
+                            Yes, but payouts cannot be deferred beyond 70. If
+                            payouts have not started by then, they start
+                            automatically. CPF LIFE premium continues to earn
+                            CPF interest, and the interest is factored into
+                            monthly payouts rather than paid separately.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q7. What happens if my CPF LIFE premium is depleted
+                            while I am still alive?
+                        </p>
+                        <p class="a">
+                            CPF LIFE is designed to provide payouts for life.
+                            CPF explains that monthly payouts are first paid
+                            from your CPF LIFE premium. When that premium is
+                            depleted, payouts continue from accumulated pooled
+                            interest, no matter how long you live.
+                        </p>
+                    </div>
+
+                    <div class="qa">
+                        <p class="q">
+                            Q8. Does the interest on CPF LIFE premium go to my
+                            beneficiaries when I pass away?
+                        </p>
+                        <p class="a">
+                            CPF states that if you pass away before your CPF
+                            LIFE premium is exhausted, any remaining premium
+                            balance and remaining CPF savings are distributed to
+                            your beneficiaries. However, the interest on CPF
+                            LIFE premiums supports the lifelong payout pool and
+                            is not treated as a separate bequest item.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Practical interpretation for retirement planning</h2>
+                <div class="split">
+                    <div>
+                        <h3>What you should focus on</h3>
+                        <ul class="mini-list">
+                            <li>
+                                <strong>RA amount at age 55:</strong> BRS, FRS
+                                or ERS level determines the base from which
+                                future payouts are estimated.
+                            </li>
+                            <li>
+                                <strong>Payout start age:</strong> Starting at
+                                65 gives earlier income; deferring up to 70 can
+                                increase monthly payouts.
+                            </li>
+                            <li>
+                                <strong>CPF LIFE plan choice:</strong> Standard
+                                gives steady payouts, Escalating grows 2%
+                                yearly, Basic starts lower and leaves more in RA
+                                initially.
+                            </li>
+                            <li>
+                                <strong
+                                    >Separate cash vs lifelong income:</strong
+                                >
+                                RA interest is best understood as supporting
+                                monthly retirement income, not as a separate
+                                fixed deposit-style interest payout.
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>One-line conclusion</h3>
+                        <div class="callout" style="margin-top: 12px">
+                            CPF does not “take away” the interest. The interest
+                            is embedded into the RA / CPF LIFE mechanics and
+                            used to support higher and lifelong monthly payouts.
+                        </div>
+                        <div class="warning" style="margin-top: 14px">
+                            This guide is explanatory and not personal financial
+                            advice. For exact personal projections, use CPF’s
+                            Retirement dashboard or CPF LIFE estimator.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Sources</h2>
+                <p class="lead">
+                    Main facts in this page are based on CPF Board materials
+                    available as of 23 June 2026.
+                </p>
+                <ol class="source-list">
+                    <li>
+                        <a
+                            href="https://www.cpf.gov.sg/member/infohub/educational-resources/what-is-the-cpf-retirement-sum"
+                            target="_blank"
+                            rel="noopener"
+                            >CPF Board — What is the CPF retirement sum?</a
+                        >
+                        Used for BRS, FRS, ERS and CPF published payout
+                        estimates for members turning 55 in 2026.
+                    </li>
+                    <li>
+                        <a
+                            href="https://www.cpf.gov.sg/member/retirement-income/milestones/reaching-age-55"
+                            target="_blank"
+                            rel="noopener"
+                            >CPF Board — Reaching age 55</a
+                        >
+                        Used for RA creation and transfer mechanics.
+                    </li>
+                    <li>
+                        <a
+                            href="https://www.cpf.gov.sg/member/retirement-income/milestones/reaching-age-65"
+                            target="_blank"
+                            rel="noopener"
+                            >CPF Board — Reaching age 65</a
+                        >
+                        Used for payout start, CPF LIFE premium deduction
+                        timing, deferral, and automatic start at age 70.
+                    </li>
+                    <li>
+                        <a
+                            href="https://www.cpf.gov.sg/member/infohub/educational-resources/cpf-life-premiums-how-does-it-work"
+                            target="_blank"
+                            rel="noopener"
+                            >CPF Board — CPF LIFE premiums: how does it work?</a
+                        >
+                        Used for Standard, Escalating and Basic Plan premium
+                        mechanics.
+                    </li>
+                    <li>
+                        <a
+                            href="https://www.cpf.gov.sg/service/article/does-my-cpf-life-premium-continue-to-earn-interest"
+                            target="_blank"
+                            rel="noopener"
+                            >CPF Board — Does my CPF LIFE premium continue to
+                            earn interest?</a
+                        >
+                        Used for the point that CPF LIFE premium continues to
+                        earn CPF interest.
+                    </li>
+                    <li>
+                        <a
+                            href="https://www.cpf.gov.sg/member/infohub/cpf-clarifies/policy-faqs/why-interest-earned-on-cpf-life-premium-not-paid-to-beneficiaries"
+                            target="_blank"
+                            rel="noopener"
+                            >CPF Board — Why interest earned on CPF LIFE premium
+                            is not paid to beneficiaries</a
+                        >
+                        Used for risk-pooling and bequest explanation.
+                    </li>
+                </ol>
+            </section>
+
+            <p class="footer">
+                Prepared for personal reference. Figures and CPF rules may
+                change; always check CPF Board for the latest official figures.
+            </p>
+        </main>
+    </body>
 </html>
