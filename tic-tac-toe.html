@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A clean, modern Tic Tac Toe game — Player X vs Player O. Play in your browser with win highlighting and score tracking.">
+  <meta property="og:title" content="Tic Tac Toe">
+  <meta property="og:description" content="A clean, modern Tic Tac Toe game — play X vs O with win highlighting and score tracking.">
+  <meta property="og:type" content="website">
+  <title>Tic Tac Toe</title>
+  <style>
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0f0f0f;
+      color: #e0e0e0;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+    }
+
+    .status {
+      font-size: 1.15rem;
+      margin-bottom: 1.5rem;
+      min-height: 1.75rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .status.turn-x  { color: #ff6b6b; }
+    .status.turn-o  { color: #4ecdc4; }
+    .status.win-x   { color: #ff6b6b; font-weight: 700; }
+    .status.win-o   { color: #4ecdc4; font-weight: 700; }
+    .status.draw    { color: #f9ca24; }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .cell {
+      background: #1a1a2e;
+      border: 2px solid #2d2d44;
+      border-radius: 12px;
+      font-size: 2.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.1s, border-color 0.15s;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .cell:not(.taken):hover {
+      background: #252545;
+      border-color: #4a4a7a;
+      transform: scale(1.03);
+    }
+    .cell:not(.taken):active {
+      transform: scale(0.96);
+    }
+    .cell.taken {
+      cursor: default;
+    }
+    .cell.x { color: #ff6b6b; }
+    .cell.o { color: #4ecdc4; }
+    .cell.win {
+      animation: pulse 0.6s ease-in-out 3;
+      border-color: #f9ca24;
+      background: #2a2a1e;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.12); }
+    }
+
+    .scoreboard {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      font-size: 1rem;
+    }
+    .scoreboard > div {
+      min-width: 80px;
+    }
+    .scoreboard .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #888;
+      margin-bottom: 0.25rem;
+    }
+    .scoreboard .count { font-size: 1.5rem; font-weight: 700; }
+    .scoreboard .count.x { color: #ff6b6b; }
+    .scoreboard .count.o { color: #4ecdc4; }
+
+    button {
+      background: #252545;
+      color: #e0e0e0;
+      border: 1px solid #3d3d60;
+      padding: 0.65rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:hover { background: #353560; }
+    button:active { transform: scale(0.96); }
+    button.primary {
+      background: #4ecdc4;
+      color: #0f0f0f;
+      border-color: #4ecdc4;
+    }
+    button.primary:hover { background: #5dddd4; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tic Tac Toe</h1>
+    <div class="status" id="status">X goes first</div>
+
+    <div class="board" id="board">
+      <div class="cell" data-idx="0"></div>
+      <div class="cell" data-idx="1"></div>
+      <div class="cell" data-idx="2"></div>
+      <div class="cell" data-idx="3"></div>
+      <div class="cell" data-idx="4"></div>
+      <div class="cell" data-idx="5"></div>
+      <div class="cell" data-idx="6"></div>
+      <div class="cell" data-idx="7"></div>
+      <div class="cell" data-idx="8"></div>
+    </div>
+
+    <div class="scoreboard">
+      <div>
+        <div class="label">X (Wins)</div>
+        <div class="count x" id="scoreX">0</div>
+      </div>
+      <div>
+        <div class="label">Draws</div>
+        <div class="count" id="scoreDraw">0</div>
+      </div>
+      <div>
+        <div class="label">O (Wins)</div>
+        <div class="count o" id="scoreO">0</div>
+      </div>
+    </div>
+
+    <button class="primary" id="newGameBtn">New Game</button>
+    <button id="resetScoreBtn" style="margin-left:0.5rem;">Reset Score</button>
+  </div>
+
+  <script src="tic-tac-toe.js"></script>
+</body>
+</html>
