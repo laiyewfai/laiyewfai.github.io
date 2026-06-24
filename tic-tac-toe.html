@@ -162,16 +162,27 @@
       overflow: hidden;
       box-shadow: 0 0 12px #ff0;
     }
-    /* rotating mouth wedge */
+    /* upper mouth wedge — fills upper-right quadrant */
     .pacman-body::before {
       content: '';
       position: absolute;
-      width: 30px; height: 64px;
-      background: #111133;
-      top: -6px;
-      right: 0;
-      transform-origin: 0 32px;
-      animation: chomp 1s ease-in-out infinite alternate;
+      width: 0; height: 0;
+      border-left: 28px solid #111133;
+      border-bottom: 28px solid transparent;
+      top: -2px; left: 26px;
+      transform-origin: 0 0;
+      animation: mouthUpper 1s ease-in-out infinite alternate;
+    }
+    /* lower mouth wedge — fills lower-right quadrant */
+    .pacman-body::after {
+      content: '';
+      position: absolute;
+      width: 0; height: 0;
+      border-left: 28px solid #111133;
+      border-top: 28px solid transparent;
+      top: 26px; left: 26px;
+      transform-origin: 0 0;
+      animation: mouthLower 1s ease-in-out infinite alternate;
     }
     /* eye */
     .pacman-eye {
@@ -184,12 +195,16 @@
       z-index: 3;
     }
 
-    @keyframes chomp {
-      0%   { transform: rotate(25deg); }
-      100% { transform: rotate(-25deg); }
+    @keyframes mouthUpper {
+      0%   { transform: rotate(-8deg); }
+      50%  { transform: rotate(-35deg); }
+      100% { transform: rotate(-8deg); }
     }
-
-    @keyframes waka {}
+    @keyframes mouthLower {
+      0%   { transform: rotate(8deg); }
+      50%  { transform: rotate(35deg); }
+      100% { transform: rotate(8deg); }
+    }
 
     /* ---- Ghost (O) ---- */
     .cell.o {
@@ -259,7 +274,8 @@
       animation: none;
       box-shadow: 0 0 25px #fff;
     }
-    .cell.win .pacman-body::before {
+    .cell.win .pacman-body::before,
+    .cell.win .pacman-body::after {
       animation: none;
       transform: rotate(0deg);
     }
