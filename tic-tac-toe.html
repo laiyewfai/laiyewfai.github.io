@@ -157,32 +157,9 @@
     .pacman-body {
       width: 52px; height: 52px;
       background: #ff0;
-      border-radius: 50%;
       position: relative;
-      overflow: hidden;
       box-shadow: 0 0 12px #ff0;
-    }
-    /* upper mouth wedge — fills upper-right quadrant */
-    .pacman-body::before {
-      content: '';
-      position: absolute;
-      width: 0; height: 0;
-      border-left: 28px solid #111133;
-      border-bottom: 28px solid transparent;
-      top: -2px; left: 26px;
-      transform-origin: 0 0;
-      animation: mouthUpper 1s ease-in-out infinite alternate;
-    }
-    /* lower mouth wedge — fills lower-right quadrant */
-    .pacman-body::after {
-      content: '';
-      position: absolute;
-      width: 0; height: 0;
-      border-left: 28px solid #111133;
-      border-top: 28px solid transparent;
-      top: 26px; left: 26px;
-      transform-origin: 0 0;
-      animation: mouthLower 1s ease-in-out infinite alternate;
+      animation: chomp 0.6s ease-in-out infinite alternate;
     }
     /* eye */
     .pacman-eye {
@@ -195,15 +172,31 @@
       z-index: 3;
     }
 
-    @keyframes mouthUpper {
-      0%   { transform: rotate(-8deg); }
-      50%  { transform: rotate(-35deg); }
-      100% { transform: rotate(-8deg); }
-    }
-    @keyframes mouthLower {
-      0%   { transform: rotate(8deg); }
-      50%  { transform: rotate(35deg); }
-      100% { transform: rotate(8deg); }
+    @keyframes chomp {
+      0% {
+        clip-path: polygon(
+          50% 50%,
+          50% 0%, 72% 3%, 88% 12%,
+          100% 30%,
+          100% 70%,
+          88% 88%, 72% 97%, 50% 100%,
+          28% 97%, 12% 88%,
+          0% 70%, 0% 30%,
+          12% 12%, 28% 3%
+        );
+      }
+      100% {
+        clip-path: polygon(
+          50% 50%,
+          50% 0%, 72% 3%, 88% 12%,
+          100% 48%,
+          100% 52%,
+          88% 88%, 72% 97%, 50% 100%,
+          28% 97%, 12% 88%,
+          0% 70%, 0% 30%,
+          12% 12%, 28% 3%
+        );
+      }
     }
 
     /* ---- Ghost (O) ---- */
@@ -269,7 +262,15 @@
       box-shadow: 0 0 20px rgba(0,255,255,0.6);
       background: #1a1a44 !important;
     }
-    .cell.win .pacman-body,
+    .cell.win .pacman-body {
+      animation: none;
+      clip-path: polygon(
+        50% 50%, 50% 0%, 72% 3%, 88% 12%, 100% 48%, 100% 52%,
+        88% 88%, 72% 97%, 50% 100%, 28% 97%, 12% 88%,
+        0% 70%, 0% 30%, 12% 12%, 28% 3%
+      );
+      box-shadow: 0 0 25px #fff;
+    }
     .cell.win .ghost-body {
       animation: none;
       box-shadow: 0 0 25px #fff;
