@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A clean, modern Tic Tac Toe game — Player X vs Player O. Play in your browser with win highlighting and score tracking.">
-  <meta property="og:title" content="Tic Tac Toe">
-  <meta property="og:description" content="A clean, modern Tic Tac Toe game — play X vs O with win highlighting and score tracking.">
+  <meta name="description" content="PAC-TAC-TOE — Tic Tac Toe meets Pac-Man. Pac-Man vs Ghosts in a neon arcade showdown.">
+  <meta property="og:title" content="PAC-TAC-TOE">
+  <meta property="og:description" content="Pac-Man vs Ghosts — Tic Tac Toe in a neon arcade style.">
   <meta property="og:type" content="website">
-  <title>Tic Tac Toe</title>
+  <title>PAC-TAC-TOE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -16,167 +19,354 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Press Start 2P', monospace;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: #0f0f0f;
-      color: #e0e0e0;
+      background: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* ----- maze dot background ----- */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 20% 20%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 30% 30%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 40% 40%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 50% 50%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 60% 60%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 70% 70%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 80% 80%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 90% 90%, rgba(255,184,82,0.25) 1px, transparent 1px),
+        radial-gradient(circle at 15% 75%, rgba(0,255,255,0.2) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 75% 15%, rgba(0,255,255,0.2) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 45% 85%, rgba(0,255,255,0.2) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 85% 65%, rgba(0,255,255,0.2) 1.5px, transparent 1.5px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ----- arcade cabinet frame ----- */
+    .cabinet {
+      position: relative;
+      z-index: 1;
+      background: #0a0a1a;
+      border: 6px solid #ff00ff;
+      border-radius: 24px;
+      padding: 2rem 2.5rem 2rem;
+      box-shadow:
+        0 0 30px rgba(255,0,255,0.3),
+        0 0 60px rgba(255,0,255,0.15),
+        inset 0 0 30px rgba(0,0,0,0.5);
+      max-width: 480px;
+      width: 100%;
     }
 
     .container {
       text-align: center;
-      padding: 2rem;
       max-width: 400px;
-      width: 100%;
+      margin: 0 auto;
     }
 
     h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-      letter-spacing: 0.05em;
-      color: #ffffff;
+      font-size: 1rem;
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
+      text-shadow:
+        0 0 10px #ff0,
+        0 0 20px #ff0,
+        0 0 40px #f80;
+      color: #ff0;
     }
 
     .status {
-      font-size: 1.15rem;
+      font-size: 0.5rem;
       margin-bottom: 1.5rem;
-      min-height: 1.75rem;
-      font-weight: 500;
+      min-height: 2rem;
+      letter-spacing: 0.1em;
       transition: color 0.2s;
+      line-height: 1.6;
     }
-    .status.turn-x  { color: #ff6b6b; }
-    .status.turn-o  { color: #4ecdc4; }
-    .status.win-x   { color: #ff6b6b; font-weight: 700; }
-    .status.win-o   { color: #4ecdc4; font-weight: 700; }
-    .status.draw    { color: #f9ca24; }
+    .status.turn-x  { color: #ff0; text-shadow: 0 0 8px #ff0; }
+    .status.turn-o  { color: #ff00ff; text-shadow: 0 0 8px #ff00ff; }
+    .status.win-x   { color: #ff0; text-shadow: 0 0 20px #ff0; }
+    .status.win-o   { color: #ff00ff; text-shadow: 0 0 20px #ff00ff; }
+    .status.draw    { color: #0ff; text-shadow: 0 0 8px #0ff; }
 
+    /* ----- board ----- */
     .board {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      width: 300px;
-      height: 300px;
+      gap: 10px;
+      width: 330px;
+      height: 330px;
       margin: 0 auto 1.5rem;
     }
 
     .cell {
-      background: #1a1a2e;
-      border: 2px solid #2d2d44;
-      border-radius: 12px;
-      font-size: 2.8rem;
-      font-weight: 700;
+      background: #111133;
+      border: 3px solid #3333cc;
+      border-radius: 8px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s, transform 0.1s, border-color 0.15s;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
     .cell:not(.taken):hover {
-      background: #252545;
-      border-color: #4a4a7a;
-      transform: scale(1.03);
+      background: #1a1a66;
+      border-color: #6666ff;
+      box-shadow: 0 0 15px rgba(100,100,255,0.4);
+      transform: scale(1.04);
     }
-    .cell:not(.taken):active {
-      transform: scale(0.96);
+    .cell:not(.taken):active { transform: scale(0.95); }
+    .cell.taken { cursor: default; }
+
+    /* pellet dot in empty cells */
+    .cell::before {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: rgba(255,184,82,0.5);
+      box-shadow: 0 0 4px rgba(255,184,82,0.5);
     }
-    .cell.taken {
-      cursor: default;
+    .cell.taken::before { display: none; }
+
+    /* ---- Pac-Man (X) ---- */
+    .cell.x {
+      background: #111133;
+      border-color: #ff0;
     }
-    .cell.x { color: #ff6b6b; }
-    .cell.o { color: #4ecdc4; }
+    .pacman {
+      width: 60px; height: 60px;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pacman-body {
+      width: 52px; height: 52px;
+      background: #ff0;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 0 12px #ff0;
+      animation: waka 0.4s ease-in-out infinite alternate;
+    }
+    /* mouth — upper triangle */
+    .pacman-body::before {
+      content: '';
+      position: absolute;
+      top: -2px; right: 6px;
+      border-left: 20px solid #111133;
+      border-top: 16px solid transparent;
+      border-bottom: 16px solid transparent;
+    }
+    /* mouth — lower triangle */
+    .pacman-body::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; right: 6px;
+      border-left: 20px solid #111133;
+      border-top: 16px solid transparent;
+      border-bottom: 16px solid transparent;
+    }
+    /* eye */
+    .pacman-eye {
+      position: absolute;
+      width: 8px; height: 8px;
+      background: #000;
+      border-radius: 50%;
+      top: 18px;
+      left: 30px;
+      z-index: 3;
+    }
+
+    @keyframes waka {
+      0%   { clip-path: polygon(100% 0, 100% 100%, 70% 70%, 55% 50%, 70% 30%); }
+      50%  { clip-path: polygon(100% 0, 100% 100%, 65% 65%, 45% 50%, 65% 35%); }
+      100% { clip-path: polygon(100% 0, 100% 100%, 75% 75%, 65% 50%, 75% 25%); }
+    }
+
+    /* ---- Ghost (O) ---- */
+    .cell.o {
+      background: #111133;
+      border-color: #ff00ff;
+    }
+    .ghost {
+      width: 48px; height: 54px;
+      position: relative;
+      z-index: 2;
+    }
+    .ghost-body {
+      width: 48px; height: 42px;
+      background: #ff00ff;
+      border-radius: 24px 24px 2px 2px;
+      position: relative;
+      box-shadow: 0 0 12px #ff00ff;
+      animation: ghostBounce 1.5s ease-in-out infinite;
+    }
+    /* wavy bottom with box-shadow dots */
+    .ghost-body::before {
+      content: '';
+      position: absolute;
+      bottom: -12px; left: 0;
+      width: 48px; height: 12px;
+      background:
+        radial-gradient(circle at 6px 0, #ff00ff 6px, transparent 6px),
+        radial-gradient(circle at 18px 0, #ff00ff 6px, transparent 6px),
+        radial-gradient(circle at 30px 0, #ff00ff 6px, transparent 6px),
+        radial-gradient(circle at 42px 0, #ff00ff 6px, transparent 6px);
+    }
+    /* eyes */
+    .ghost-eye {
+      position: absolute;
+      width: 10px; height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      top: 12px;
+      z-index: 3;
+    }
+    .ghost-eye.left  { left: 8px; }
+    .ghost-eye.right { right: 8px; }
+    .ghost-pupil {
+      position: absolute;
+      width: 6px; height: 7px;
+      background: #00f;
+      border-radius: 50%;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes ghostBounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
+    }
+
+    /* ---- win cell ---- */
     .cell.win {
-      animation: pulse 0.6s ease-in-out 3;
-      border-color: #f9ca24;
-      background: #2a2a1e;
+      animation: winFlash 0.5s ease-in-out 4;
+      border-color: #0ff !important;
+      box-shadow: 0 0 20px rgba(0,255,255,0.6);
+      background: #1a1a44 !important;
+    }
+    .cell.win .pacman-body,
+    .cell.win .ghost-body {
+      animation: none;
+      box-shadow: 0 0 25px #fff;
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50%      { transform: scale(1.12); }
+    @keyframes winFlash {
+      0%, 100% { background: #1a1a44; }
+      50%      { background: #003366; }
     }
 
+    /* ---- scoreboard ---- */
     .scoreboard {
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 1.5rem;
       margin-bottom: 1.5rem;
-      font-size: 1rem;
+      font-size: 0.45rem;
     }
-    .scoreboard > div {
-      min-width: 80px;
-    }
+    .scoreboard > div { min-width: 85px; }
     .scoreboard .label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       color: #888;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.35rem;
     }
-    .scoreboard .count { font-size: 1.5rem; font-weight: 700; }
-    .scoreboard .count.x { color: #ff6b6b; }
-    .scoreboard .count.o { color: #4ecdc4; }
+    .scoreboard .count { font-size: 0.8rem; }
+    .scoreboard .count.x { color: #ff0; text-shadow: 0 0 8px #ff0; }
+    .scoreboard .count.o { color: #ff00ff; text-shadow: 0 0 8px #ff00ff; }
+    .scoreboard .count.draw { color: #0ff; }
 
+    /* ---- buttons ---- */
+    .btn-row {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
     button {
-      background: #252545;
-      color: #e0e0e0;
-      border: 1px solid #3d3d60;
-      padding: 0.65rem 1.5rem;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.45rem;
+      letter-spacing: 0.1em;
+      padding: 0.7rem 1.2rem;
+      border: 2px solid #4444cc;
+      border-radius: 4px;
+      background: #1a1a3e;
+      color: #ccf;
       cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
+      transition: all 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
-    button:hover { background: #353560; }
-    button:active { transform: scale(0.96); }
-    button.primary {
-      background: #4ecdc4;
-      color: #0f0f0f;
-      border-color: #4ecdc4;
+    button:hover {
+      background: #2a2a5e;
+      border-color: #8888ff;
+      box-shadow: 0 0 12px rgba(100,100,255,0.4);
     }
-    button.primary:hover { background: #5dddd4; }
+    button:active { transform: scale(0.95); }
+    button.primary {
+      background: #ff0;
+      color: #000;
+      border-color: #ff0;
+      box-shadow: 0 0 15px rgba(255,255,0,0.3);
+    }
+    button.primary:hover {
+      background: #ffe44d;
+      box-shadow: 0 0 25px rgba(255,255,0,0.5);
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Tic Tac Toe</h1>
-    <div class="status" id="status">X goes first</div>
 
-    <div class="board" id="board">
-      <div class="cell" data-idx="0"></div>
-      <div class="cell" data-idx="1"></div>
-      <div class="cell" data-idx="2"></div>
-      <div class="cell" data-idx="3"></div>
-      <div class="cell" data-idx="4"></div>
-      <div class="cell" data-idx="5"></div>
-      <div class="cell" data-idx="6"></div>
-      <div class="cell" data-idx="7"></div>
-      <div class="cell" data-idx="8"></div>
+  <div class="cabinet">
+    <div class="container">
+      <h1>PAC·TAC·TOE</h1>
+      <div class="status turn-x" id="status">PAC-MAN MOVES FIRST</div>
+
+      <div class="board" id="board">
+        <div class="cell" data-idx="0"></div>
+        <div class="cell" data-idx="1"></div>
+        <div class="cell" data-idx="2"></div>
+        <div class="cell" data-idx="3"></div>
+        <div class="cell" data-idx="4"></div>
+        <div class="cell" data-idx="5"></div>
+        <div class="cell" data-idx="6"></div>
+        <div class="cell" data-idx="7"></div>
+        <div class="cell" data-idx="8"></div>
+      </div>
+
+      <div class="scoreboard">
+        <div>
+          <div class="label">PAC-MAN</div>
+          <div class="count x" id="scoreX">0</div>
+        </div>
+        <div>
+          <div class="label">DRAWS</div>
+          <div class="count draw" id="scoreDraw">0</div>
+        </div>
+        <div>
+          <div class="label">GHOSTS</div>
+          <div class="count o" id="scoreO">0</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="primary" id="newGameBtn">NEW GAME</button>
+        <button id="resetScoreBtn">RESET</button>
+      </div>
     </div>
-
-    <div class="scoreboard">
-      <div>
-        <div class="label">X (Wins)</div>
-        <div class="count x" id="scoreX">0</div>
-      </div>
-      <div>
-        <div class="label">Draws</div>
-        <div class="count" id="scoreDraw">0</div>
-      </div>
-      <div>
-        <div class="label">O (Wins)</div>
-        <div class="count o" id="scoreO">0</div>
-      </div>
-    </div>
-
-    <button class="primary" id="newGameBtn">New Game</button>
-    <button id="resetScoreBtn" style="margin-left:0.5rem;">Reset Score</button>
   </div>
 
   <script src="tic-tac-toe.js"></script>
