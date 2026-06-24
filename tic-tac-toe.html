@@ -159,10 +159,21 @@
       background: #ff0;
       border-radius: 50%;
       position: relative;
+      overflow: hidden;
       box-shadow: 0 0 12px #ff0;
-      animation: waka 0.35s linear infinite;
     }
-    /* eye — sits on the left/center of the yellow body */
+    /* rotating mouth wedge */
+    .pacman-body::before {
+      content: '';
+      position: absolute;
+      width: 30px; height: 64px;
+      background: #111133;
+      top: -6px;
+      right: 0;
+      transform-origin: 0 32px;
+      animation: chomp 0.3s ease-in-out infinite alternate;
+    }
+    /* eye */
     .pacman-eye {
       position: absolute;
       width: 8px; height: 8px;
@@ -173,13 +184,12 @@
       z-index: 3;
     }
 
-    @keyframes waka {
-      0%   { clip-path: polygon(100% 0, 100% 100%, 85% 75%, 80% 50%, 85% 25%); }
-      25%  { clip-path: polygon(100% 0, 100% 100%, 70% 75%, 60% 50%, 70% 25%); }
-      50%  { clip-path: polygon(100% 0, 100% 100%, 55% 80%, 30% 50%, 55% 20%); }
-      75%  { clip-path: polygon(100% 0, 100% 100%, 70% 75%, 60% 50%, 70% 25%); }
-      100% { clip-path: polygon(100% 0, 100% 100%, 85% 75%, 80% 50%, 85% 25%); }
+    @keyframes chomp {
+      0%   { transform: rotate(38deg); }
+      100% { transform: rotate(-38deg); }
     }
+
+    @keyframes waka {}
 
     /* ---- Ghost (O) ---- */
     .cell.o {
@@ -248,6 +258,10 @@
     .cell.win .ghost-body {
       animation: none;
       box-shadow: 0 0 25px #fff;
+    }
+    .cell.win .pacman-body::before {
+      animation: none;
+      transform: rotate(0deg);
     }
 
     @keyframes winFlash {
