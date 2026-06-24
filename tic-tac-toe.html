@@ -173,28 +173,28 @@
     }
 
     @keyframes chomp {
-      0% {
+      0% { /* wide open */
         clip-path: polygon(
-          50% 50%,
-          50% 0%, 72% 3%, 88% 12%,
-          100% 30%,
-          100% 70%,
-          88% 88%, 72% 97%, 50% 100%,
-          28% 97%, 12% 88%,
-          0% 70%, 0% 30%,
-          12% 12%, 28% 3%
+          100% 30%,                         /* upper mouth edge on right */
+          50% 50%,                          /* center — mouth vertex */
+          100% 70%,                         /* lower mouth edge on right */
+          88% 88%, 72% 97%, 50% 100%,       /* bottom-right curve */
+          28% 97%, 12% 88%,                 /* bottom-left curve */
+          0% 70%, 0% 30%,                   /* left edge */
+          12% 12%, 28% 3%,                  /* top-left curve */
+          50% 0%, 72% 3%, 88% 12%           /* top-right curve (closes to upper mouth) */
         );
       }
-      100% {
+      100% { /* nearly closed */
         clip-path: polygon(
-          50% 50%,
-          50% 0%, 72% 3%, 88% 12%,
-          100% 48%,
-          100% 52%,
-          88% 88%, 72% 97%, 50% 100%,
-          28% 97%, 12% 88%,
-          0% 70%, 0% 30%,
-          12% 12%, 28% 3%
+          100% 47%,                         /* upper mouth (narrow) */
+          50% 50%,                          /* center */
+          100% 53%,                         /* lower mouth (narrow) */
+          88% 88%, 72% 97%, 50% 100%,       /* bottom-right curve */
+          28% 97%, 12% 88%,                 /* bottom-left curve */
+          0% 70%, 0% 30%,                   /* left edge */
+          12% 12%, 28% 3%,                  /* top-left curve */
+          50% 0%, 72% 3%, 88% 12%           /* top-right curve */
         );
       }
     }
@@ -265,9 +265,12 @@
     .cell.win .pacman-body {
       animation: none;
       clip-path: polygon(
-        50% 50%, 50% 0%, 72% 3%, 88% 12%, 100% 48%, 100% 52%,
-        88% 88%, 72% 97%, 50% 100%, 28% 97%, 12% 88%,
-        0% 70%, 0% 30%, 12% 12%, 28% 3%
+        100% 47%, 50% 50%, 100% 53%,
+        88% 88%, 72% 97%, 50% 100%,
+        28% 97%, 12% 88%,
+        0% 70%, 0% 30%,
+        12% 12%, 28% 3%,
+        50% 0%, 72% 3%, 88% 12%
       );
       box-shadow: 0 0 25px #fff;
     }
