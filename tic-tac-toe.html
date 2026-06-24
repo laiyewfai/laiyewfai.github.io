@@ -160,41 +160,25 @@
       border-radius: 50%;
       position: relative;
       box-shadow: 0 0 12px #ff0;
-      animation: waka 0.4s ease-in-out infinite alternate;
+      animation: waka 0.35s linear infinite;
     }
-    /* mouth — upper triangle */
-    .pacman-body::before {
-      content: '';
-      position: absolute;
-      top: -2px; right: 6px;
-      border-left: 20px solid #111133;
-      border-top: 16px solid transparent;
-      border-bottom: 16px solid transparent;
-    }
-    /* mouth — lower triangle */
-    .pacman-body::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; right: 6px;
-      border-left: 20px solid #111133;
-      border-top: 16px solid transparent;
-      border-bottom: 16px solid transparent;
-    }
-    /* eye */
+    /* eye — sits on the left/center of the yellow body */
     .pacman-eye {
       position: absolute;
       width: 8px; height: 8px;
       background: #000;
       border-radius: 50%;
-      top: 18px;
-      left: 30px;
+      top: 14px;
+      left: 28px;
       z-index: 3;
     }
 
     @keyframes waka {
-      0%   { clip-path: polygon(100% 0, 100% 100%, 70% 70%, 55% 50%, 70% 30%); }
-      50%  { clip-path: polygon(100% 0, 100% 100%, 65% 65%, 45% 50%, 65% 35%); }
-      100% { clip-path: polygon(100% 0, 100% 100%, 75% 75%, 65% 50%, 75% 25%); }
+      0%   { clip-path: polygon(100% 0, 100% 100%, 85% 75%, 80% 50%, 85% 25%); }
+      25%  { clip-path: polygon(100% 0, 100% 100%, 70% 75%, 60% 50%, 70% 25%); }
+      50%  { clip-path: polygon(100% 0, 100% 100%, 55% 80%, 30% 50%, 55% 20%); }
+      75%  { clip-path: polygon(100% 0, 100% 100%, 70% 75%, 60% 50%, 70% 25%); }
+      100% { clip-path: polygon(100% 0, 100% 100%, 85% 75%, 80% 50%, 85% 25%); }
     }
 
     /* ---- Ghost (O) ---- */
