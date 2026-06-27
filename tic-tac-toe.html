@@ -141,7 +141,7 @@
     }
     .cell.taken::before { display: none; }
 
-    /* ---- Pac-Man (X) ---- */
+    /* ---- Pac-Man (X) — two rotating half-discs ---- */
     .cell.x {
       background: #111133;
       border-color: #ff0;
@@ -150,16 +150,26 @@
       width: 60px; height: 60px;
       position: relative;
       z-index: 2;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    .pacman-body {
-      width: 52px; height: 52px;
+    .pacman-top, .pacman-bottom {
+      width: 52px; height: 26px;
       background: #ff0;
-      position: relative;
+      position: absolute;
+      left: 50%;
+      margin-left: -26px;
       box-shadow: 0 0 12px #ff0;
-      animation: chomp 0.6s ease-in-out infinite alternate;
+    }
+    .pacman-top {
+      top: 4px;
+      border-radius: 52px 52px 0 0;
+      transform-origin: 50% 100%;
+      animation: chompTop 0.35s ease-in-out infinite alternate;
+    }
+    .pacman-bottom {
+      bottom: 4px;
+      border-radius: 0 0 52px 52px;
+      transform-origin: 50% 0%;
+      animation: chompBottom 0.35s ease-in-out infinite alternate;
     }
     /* eye */
     .pacman-eye {
@@ -167,36 +177,18 @@
       width: 8px; height: 8px;
       background: #000;
       border-radius: 50%;
-      top: 14px;
-      left: 28px;
+      top: 12px;
+      left: 22px;
       z-index: 3;
     }
 
-    @keyframes chomp {
-      0% { /* wide open */
-        clip-path: polygon(
-          100% 30%,                         /* upper mouth edge on right */
-          50% 50%,                          /* center — mouth vertex */
-          100% 70%,                         /* lower mouth edge on right */
-          88% 88%, 72% 97%, 50% 100%,       /* bottom-right curve */
-          28% 97%, 12% 88%,                 /* bottom-left curve */
-          0% 70%, 0% 30%,                   /* left edge */
-          12% 12%, 28% 3%,                  /* top-left curve */
-          50% 0%, 72% 3%, 88% 12%           /* top-right curve (closes to upper mouth) */
-        );
-      }
-      100% { /* nearly closed */
-        clip-path: polygon(
-          100% 47%,                         /* upper mouth (narrow) */
-          50% 50%,                          /* center */
-          100% 53%,                         /* lower mouth (narrow) */
-          88% 88%, 72% 97%, 50% 100%,       /* bottom-right curve */
-          28% 97%, 12% 88%,                 /* bottom-left curve */
-          0% 70%, 0% 30%,                   /* left edge */
-          12% 12%, 28% 3%,                  /* top-left curve */
-          50% 0%, 72% 3%, 88% 12%           /* top-right curve */
-        );
-      }
+    @keyframes chompTop {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(-40deg); }
+    }
+    @keyframes chompBottom {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(40deg); }
     }
 
     /* ---- Ghost (O) ---- */
@@ -262,26 +254,14 @@
       box-shadow: 0 0 20px rgba(0,255,255,0.6);
       background: #1a1a44 !important;
     }
-    .cell.win .pacman-body {
+    .cell.win .pacman-top,
+    .cell.win .pacman-bottom {
       animation: none;
-      clip-path: polygon(
-        100% 47%, 50% 50%, 100% 53%,
-        88% 88%, 72% 97%, 50% 100%,
-        28% 97%, 12% 88%,
-        0% 70%, 0% 30%,
-        12% 12%, 28% 3%,
-        50% 0%, 72% 3%, 88% 12%
-      );
       box-shadow: 0 0 25px #fff;
     }
     .cell.win .ghost-body {
       animation: none;
       box-shadow: 0 0 25px #fff;
-    }
-    .cell.win .pacman-body::before,
-    .cell.win .pacman-body::after {
-      animation: none;
-      transform: rotate(0deg);
     }
 
     @keyframes winFlash {

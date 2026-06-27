@@ -33,7 +33,7 @@
 
   /* ----- build Pac-Man DOM once ----- */
   function pacmanHTML() {
-    return '<div class="pacman"><div class="pacman-body"><div class="pacman-eye"></div></div></div>';
+    return '<div class="pacman"><div class="pacman-top"></div><div class="pacman-bottom"></div><div class="pacman-eye"></div></div>';
   }
 
   /* ----- build Ghost DOM once (random-ish color) ----- */
