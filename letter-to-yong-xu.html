@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>写给女儿的底色 · 从爸爸心底的话</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ===== Tokens from design-md/notion/DESIGN.md ===== */
+  :root{
+    --primary:#5645d4;
+    --ink:#37352f; --ink-deep:#1a1a1a; --slate:#5d5b54; --steel:#787671; --stone:#a4a097;
+    --canvas:#ffffff; --surface:#faf9f7; --surface-soft:#fffdf9;
+    --hairline:#e5e3df; --hairline-soft:#ede9e4;
+    --peach:#ffe8d4; --rose:#fde0ec; --mint:#d9f3e1; --lavender:#e6e0f5;
+    --sky:#dcecfa; --yellow:#fef7d6; --cream:#f8f5e8; --gray:#f0eeec;
+    --purple:#7b3ff2;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Serif SC", Georgia, "Songti SC", serif;
+    background:var(--surface); color:var(--ink);
+    font-weight:300; line-height:2.0; letter-spacing:.01em;
+    -webkit-font-smoothing:antialiased;
+    padding:0 20px;
+  }
+  .page{max-width:660px;margin:0 auto;padding:88px 0 120px}
+  .sans{font-family:"Noto Sans SC",system-ui,sans-serif}
+
+  /* ===== Masthead ===== */
+  .mast{text-align:center;margin-bottom:72px}
+  .mast .catkin{font-size:13px;letter-spacing:.4em;color:var(--primary);
+    font-family:"Noto Sans SC",sans-serif;font-weight:500;margin-bottom:26px}
+  .mast h1{font-size:40px;font-weight:600;line-height:1.35;letter-spacing:-.01em;color:var(--ink-deep)}
+  .mast .sub{font-size:15px;color:var(--steel);margin-top:16px;font-family:"Noto Sans SC",sans-serif;font-weight:400}
+  .rule{width:44px;height:3px;background:var(--primary);border-radius:9999px;margin:34px auto 0;opacity:.85}
+
+  /* ===== Salutation ===== */
+  .salutation{font-size:20px;color:var(--ink);margin-bottom:8px;font-weight:500}
+  .opening p{font-size:18px;color:var(--ink);margin:20px 0}
+  .divider{border:none;border-top:1px solid var(--hairline);margin:56px 0}
+
+  /* ===== Section ===== */
+  .item{margin:56px 0}
+  .item-tag{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .dot{width:14px;height:14px;border-radius:50%;flex:none;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .item-tag .lbl{font-family:"Noto Sans SC",sans-serif;font-size:13px;font-weight:500;
+    letter-spacing:.16em;color:var(--steel)}
+  .item-tag .num{font-family:"Noto Sans SC",sans-serif;font-size:12px;font-weight:500;
+    color:var(--stone);margin-left:auto;letter-spacing:.1em}
+
+  /* thesis callout */
+  .thesis{font-size:21px;font-weight:600;line-height:1.7;color:var(--ink-deep);
+    padding:22px 26px;border-radius:14px;margin-bottom:24px;position:relative}
+  .item p{font-size:18px;color:var(--ink);margin:20px 0}
+  .item p:last-child{margin-bottom:0}
+
+  /* ===== Memory placeholder (only Thomas can fill) ===== */
+  .memory{background:var(--cream);border:1.5px dashed #d8c9a8;border-radius:16px;
+    padding:32px 30px;margin:64px 0;text-align:center}
+  .memory .cap{font-family:"Noto Sans SC",sans-serif;font-size:12px;font-weight:500;
+    letter-spacing:.2em;color:#a9863f;margin-bottom:16px}
+  .memory .body{font-size:18px;color:var(--slate);line-height:1.9}
+  .memory .hint{font-family:"Noto Sans SC",sans-serif;font-size:13px;color:var(--stone);margin-top:16px}
+
+  /* ===== Closing poem ===== */
+  .closing{margin-top:80px}
+  .closing .name{font-size:26px;font-weight:600;color:var(--ink-deep);text-align:center;margin-bottom:8px}
+  .poem{background:linear-gradient(180deg,var(--lavender),var(--sky));
+    border-radius:20px;padding:48px 40px;text-align:center;margin:28px 0 48px}
+  .poem .verse{font-size:24px;font-weight:500;color:var(--primary);letter-spacing:.06em;margin-bottom:24px}
+  .poem p{font-size:18px;color:var(--ink);line-height:2.1}
+  .coda p{font-size:18px;color:var(--ink);margin:20px 0}
+  .sign{text-align:right;margin-top:48px}
+  .sign .a{font-size:20px;font-weight:600;color:var(--ink-deep)}
+  .sign .d{font-family:"Noto Sans SC",sans-serif;font-size:13px;color:var(--steel);margin-top:8px;letter-spacing:.08em}
+
+  .source{font-family:"Noto Sans SC",sans-serif;text-align:center;font-size:11px;color:var(--stone);
+    margin-top:90px;padding-top:24px;border-top:1px solid var(--hairline-soft);letter-spacing:.05em}
+
+  @media(max-width:600px){
+    .page{padding:56px 0 80px}
+    .mast h1{font-size:30px}
+    .thesis{font-size:19px;padding:18px 20px}
+    .item p,.opening p{font-size:17px}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="mast">
+    <div class="catkin sans">未 若 柳 絮 因 风 起</div>
+    <h1>写给女儿的底色</h1>
+    <div class="sub sans">从爸爸心底的话</div>
+    <div class="rule"></div>
+  </header>
+
+  <div class="opening">
+    <p class="salutation">咏絮，我的女儿：</p>
+    <p>见字如面。</p>
+    <p>爸爸坐在这儿想了很久，不知道该怎么开头。最后决定，就像跟你面对面说话那样——不讲大道理，只说我心里最想让你知道的事。趁世界还没来得及对你指手画脚，爸爸想悄悄往你心里放一些亮晶晶的、谁也夺不走的东西。</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 1 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--peach)"></span><span class="lbl sans">第一件事</span><span class="num sans">01 / 10</span></div>
+    <div class="thesis" style="background:var(--peach)">你的存在本身，就已经足够好了。</div>
+    <p>这个世界从你很小的时候就会开始告诉你：要考高分，要听话，要让别人满意。慢慢地，你可能会以为，只有被认可了，你才算是一个"好孩子"。</p>
+    <p>在你还没有被这些话影响之前，爸爸想认认真真地告诉你——</p>
+    <p>你从来到这个世界的第一天起，就已经足够好了。不是因为你会笑、会翻身、会叫爸爸妈妈，也不是因为你以后会变得聪明、漂亮、懂事。就是因为——你是你。</p>
+    <p>我们家爱你不是因为你做了什么。这份爱不是奖品，是你永远可以踩上去的地基。</p>
+    <p>记住了，宝贝。这是所有事情的开头。</p>
+  </section>
+
+  <!-- 2 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--rose)"></span><span class="lbl sans">第二件事</span><span class="num sans">02 / 10</span></div>
+    <div class="thesis" style="background:var(--rose)">人生不是一场考试，而是一段旅程。</div>
+    <p>世界会给每个人发一本"说明书"：好好读书，上好大学，找份好工作，挣很多钱，让别人羡慕。很多人就这样走完了一生。走到一个看起来挺好的地方，却觉得心里空空的。</p>
+    <p>那种空，不是你不懂事，也不是你不知足——它是一个信号。它在悄悄告诉你：你一直在跑别人给你画好的跑道。</p>
+    <p>知道自己想要什么，知道自己不想要什么，知道什么事值得拼尽全力，什么事不值得多看一眼——这才是真正的长大。不是拥有得越来越多，而是把自己找回来。</p>
+    <p>靠别人夸你、认可你才觉得安全，那种安全感是借来的。它会在你最脆弱的时候，跑来催你还债。唯一真正撑得住你的，是你自己在心里一点点建起来的那块地方。</p>
+    <p>爸爸希望你，从现在就给自己建那块地基。</p>
+  </section>
+
+  <!-- 3 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--mint)"></span><span class="lbl sans">第三件事</span><span class="num sans">03 / 10</span></div>
+    <div class="thesis" style="background:var(--mint)">找到那件让你忘了时间的事。</div>
+    <p>这个世界上有一件事，是属于你的。不是命运硬塞给你的，而是你自己会发现的那一件——那件没人催你你也会去做的事，那件做起来像在玩、别人看起来像在工作的事，那件你觉得很自然、别人却觉得不可思议的事。</p>
+    <p>等你找到了它，努力就不再是苦差事。进步会悄悄发生。你会变得很难被超越——因为没有人能跑得过一个根本没觉得自己在"跑"的人。</p>
+    <p>世界会劝你选一条安稳的、好解释的、能挣钱的路。爸爸不反对安稳，但爸爸想告诉你——认真听别人的建议，然后问自己一个问题：给你这个建议的人，过的到底是不是你真正想要的生活？</p>
+    <p>你心里有答案的。</p>
+  </section>
+
+  <!-- 4 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--sky)"></span><span class="lbl sans">第四件事</span><span class="num sans">04 / 10</span></div>
+    <div class="thesis" style="background:var(--sky)">别人成功的时候，别忘了运气；你跌倒的时候，别忘了还有明天。</div>
+    <p>当你看到一个人特别厉害，你会忍不住想——他一定比我聪明，比我努力，比我更有天赋，所以他理所应当得到了那些。</p>
+    <p>有时候是的。</p>
+    <p>但更多时候，跟他一样聪明、一样努力、一样有天赋的人，只是在某个关键的瞬间，运气不一样。那些人没有人写他们的故事，没有人给他们掌声。</p>
+    <p>这件事有两面。爸爸希望你记住：</p>
+    <p>对别人的成功，保持一点点谦逊——你看不见里面有多少运气。<br>对自己的低谷，保持一点点耐心——你也看不见未来隐藏着什么转机。</p>
+    <p>你不需要把所有事情都算准。你只需要在场足够久，让自己变得足够好，让真实的能力慢慢穿过那些噪杂的声音，被看见。</p>
+    <p>谢道韫不知道她那句"未若柳絮因风起"会被记住一千年。她只是说了她真正看见的东西。这就够了，永远都够了。</p>
+    <p>你也一样。</p>
+  </section>
+
+  <!-- 5 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--yellow)"></span><span class="lbl sans">第五件事</span><span class="num sans">05 / 10</span></div>
+    <div class="thesis" style="background:var(--yellow)">困难不是来打败你的，是来帮你长大的。</div>
+    <p>人和压力之间的关系，大概有三种。</p>
+    <p>第一种是脆的——一压就断。<br>第二种是韧的——撑住了，活下来了，回到原来的样子。<br>还有第三种——它借着压力，变得比以前更强。它需要那点困难，才能成为它本来能成为的样子。</p>
+    <p>女儿，爸爸不是要养一个只会逃避困难的孩子。爸爸希望你成为第三种人。</p>
+    <p>跌倒了，不是判决书。它是一个信号，告诉你这一次的尝试里，什么地方是真实的。它对你这个人没有任何最后的结论。</p>
+    <p>肌肉是在阻力中生长的。判断力、耐心、品格——也是。那份压力，如果你愿意诚实地面对它，它是在帮你，不是在跟你作对。</p>
+    <p>唯一会让你越来越糟的失败，是你不愿意回头看的那一次。看清楚发生了什么，把真实的东西捡起来，调整一下，再出发。</p>
+    <p>勇气不是不害怕，是你害怕，但还是对那件难事感到好奇，而不是转身跑开。</p>
+    <p>柳絮不重，却能飞得很远。不要怕那阵风，爸爸在风里接着你。</p>
+  </section>
+
+  <!-- 6 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--lavender)"></span><span class="lbl sans">第六件事</span><span class="num sans">06 / 10</span></div>
+    <div class="thesis" style="background:var(--lavender)">你可以改变自己的想法——这不可耻，这很勇敢。</div>
+    <p>有一个陷阱，爸爸自己也掉进去过。你在一件事上投入了很多——一个想法、一段关系、一条路——投入得越多，你就越难离开。不是因为那件事还是对的，而是因为你觉得自己已经花了太多力气，离开就好像亏了。</p>
+    <p>女儿，已经付出的，没了就是没了。它不会改变"现在什么才是真的"。你唯一永远需要问自己的问题是：以我现在知道的这些，下一步最好的走法是什么？</p>
+    <p>信念不是忠诚。它只是你目前对"什么是对的"最好的估计。当新的证据来了，最诚实的事、最有勇气的事，就是更新那个估计。</p>
+    <p>当事实变了就改变想法，这不是软弱，这是脑子本来就应该有的样子。</p>
+    <p>你可以对一个想法足够坚定，坚定到可以行动；同时足够松手，松手到可以放下。善于更新的人，比那种死犟到底的人更能驾驭这个世界。</p>
+    <p>记住，在咱家——你因为有充分的理由改变了主意，这不是丢脸的事。这是爸爸最敬重的事情之一。</p>
+  </section>
+
+  <!-- 7 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--cream)"></span><span class="lbl sans">第七件事</span><span class="num sans">07 / 10</span></div>
+    <div class="thesis" style="background:var(--cream)">你可以自己定义"赢"是什么样的。</div>
+    <p>大多数人一辈子都在玩别人设计的游戏。规则是被人塞到手里的，他们从来没有停下来问过：我真的认这套玩法吗？</p>
+    <p>他们追学历，因为学历高的人被捧。他们用薪水衡量一切，因为薪水好比较。</p>
+    <p>女儿，趁那些"大家都这样"的想法还没把你裹得太紧，爸爸现在就想告诉你：你可以自己定义什么叫赢。</p>
+    <p>那种赢，不是从外面看起来像成功的，不是在饭桌上能拿出来比的。而是——对"你这个具体的人，带着你具体的脾气和天性，朝着你真正在乎的东西走"来说，一个好的一天、一个好的一年、一个好的人生，究竟是什么样子。</p>
+    <p>谢道韫说"未若柳絮因风起"，不是想赢那场比试。她只是说了她真正看见的。</p>
+    <p>这才是值得做的事：说你真正看见的，活你真正相信的，要你真正想要的。</p>
+    <p>知道你在玩什么游戏，确认那是你自己选的，然后，全力去玩。</p>
+    <p>爸爸会坐在场边，一直看着你。</p>
+  </section>
+
+  <!-- 8 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--gray)"></span><span class="lbl sans">第八件事</span><span class="num sans">08 / 10</span></div>
+    <div class="thesis" style="background:var(--gray)">相信那些自己也会受伤的人。</div>
+    <p>这个世界从来不缺给你建议的人。在你听任何人的话之前，先问一个问题：如果他错了，他自己会承受什么？</p>
+    <p>如果答案是"什么都不会"——不管那个建议给你带来多大的代价，他都能全身而退——那你就要小心了。最危险的指引，来自那些对自己说的话毫无风险的人。</p>
+    <p>真正值得你听的，是那种自己也押上了筹码的人——自己的钱、自己的名声、自己的心。那份责任感，会让他的想法变得锋利，比光靠自信强得多。</p>
+    <p>对你自己也一样。在你给别人建议之前，先问自己：我会不会照着做？当你做了一个决定，就完整地承担它。不是因为你一定对，而是因为愿意承担后果，才让那个决定真正属于你。</p>
+    <p>爸爸在你这个年纪的时候，也吃过不听这句话的亏。写在这里，就是想让你少绕一点路。</p>
+  </section>
+
+  <!-- 9 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--peach)"></span><span class="lbl sans">第九件事</span><span class="num sans">09 / 10</span></div>
+    <div class="thesis" style="background:var(--peach)">你人生里最重要的事，往往是没人预料到的。</div>
+    <p>不是那个改变一切的机遇，不是那个把你重新打碎的时刻，不是那个让所有旧规则都作废的发明。</p>
+    <p>历史大多数时候就是这样：漫长又平常的每一天，然后被一个谁也没想到的事打断，整个局面重新洗牌。</p>
+    <p>这不值得害怕，这值得你用另一种方式去准备。</p>
+    <p>怎么在一个不确定的世界里站稳呢？爸爸给你三个小小的建议——</p>
+    <p>第一，留有余地。一个你还能抓得住的好机会，比一个完美但没法掉头的计划更值钱。<br>第二，保护好自己最坏的情况。灾难性的损失——钱的、关系的、名声的——才值得你真正花力气去防。<br>第三，去交那些在很多种未来里都能站得住的朋友，去学那些在很多种未来里都能用得上的本事，去修那种在很多种未来里都不会倒的品格。</p>
+    <p>你不会把未来算准，没有人能。你能做的，是让自己始终处在一个能够好好回应意外的地方。这份准备不是运气，是你提前、安安静静地做出的一份选择。</p>
+    <p>爸爸在帮你打这份底子，但有一天，你要自己接着打。</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="item">
+    <div class="item-tag"><span class="dot" style="background:var(--mint)"></span><span class="lbl sans">第十件事</span><span class="num sans">10 / 10</span></div>
+    <div class="thesis" style="background:var(--mint)">在拼命努力之前，先想清楚值不值得努力。</div>
+    <p>努力是对的，但先确认你在做正确的事。朝着错误的方向拼命，积累出来的是疲惫，不是进步。看起来很忙、很辛苦，不等于真的在建什么东西。</p>
+    <p>判断力——那种能读懂一个处境、然后做出好选择的能力——是你这辈子能拥有的、最稀有也最值钱的东西。它没法假装，没法替代，无论这个时代怎么变，它都不会过时。</p>
+    <p>爸爸希望你有意地去磨它。多看书，在难的问题上多待一会儿，和跟你想得不一样的人聊聊天，学会分清楚"听起来对的"和"真正对的"。</p>
+    <p>还有——每当有人跟你说了一段让你觉得特别有道理的话，永远记得问一句：谁会觉得相信这件事有好处？</p>
+    <p>这句话，你在任何年纪拿出来用，都不会过时。</p>
+  </section>
+
+  <!-- Memory placeholder — only Thomas can fill this -->
+  <div class="memory">
+    <div class="cap sans">一个只属于我们的记忆</div>
+    <div class="body">〔 爸爸想在这里，放一段关于你的、真实发生过的小事 —— <br>某个清晨、某句话、某个瞬间，只有我们俩知道的那种。 〕</div>
+    <div class="hint sans">这一段留给你亲手填。告诉我那个记忆，我把它接进来。</div>
+  </div>
+
+  <!-- Closing -->
+  <div class="closing">
+    <div class="name">咏絮。</div>
+    <div class="poem">
+      <div class="verse">未若柳絮因风起。</div>
+      <p>柳絮不重，却能飞得很远。<br>它不跟风较劲，也不怕风，<br>只是去它该去的地方。<br>落在哪里，哪里就有了春天的痕迹。</p>
+    </div>
+    <div class="coda">
+      <p>爸爸想让你知道的，就是这些了。</p>
+      <p>剩下的路，上面写的那些话，有的你现在就懂，有的要等很久以后才明白。没关系，慢慢来。</p>
+      <p>爸爸不完美，也会犯错。但有件事永远不会变——</p>
+      <p>无论你飞到哪里，风有多大，只要你回头，我都在。</p>
+    </div>
+    <div class="sign">
+      <div class="a">爱你的爸爸</div>
+      <div class="d sans">二〇二六年 · 写在春天里 · 永远有效</div>
+    </div>
+  </div>
+
+  <div class="source sans">为咏絮而作 · 版式取自 awesome-design-md › Notion DESIGN.md</div>
+
+</div>
+</body>
+</html>
